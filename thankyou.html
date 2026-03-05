@@ -20,653 +20,287 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
 <!-- End Meta Pixel -->
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --blue: #257bab;
-    --green: #00a651;
-    --blue-dark: #1a5c84;
-    --green-dark: #007d3c;
-    --white: #ffffff;
-    --off-white: #f5f9fc;
-    --gray: #6b7280;
-    --text: #1a2b3c;
+    --blue: #257bab; --green: #00a651; --blue-dark: #1a5c84; --green-dark: #007d3c;
+    --white: #ffffff; --off-white: #f5f9fc; --gray: #6b7280; --text: #1a2b3c;
   }
-
   html { scroll-behavior: smooth; }
+  body { font-family: 'Poppins', sans-serif; color: var(--text); background: var(--off-white); min-height: 100vh; overflow-x: hidden; }
 
-  body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--text);
-    background: var(--off-white);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── HEADER ── */
   header {
     background: linear-gradient(135deg, #0d3d5e 0%, #1a5c84 50%, #0a6634 100%);
-    padding: 24px 20px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 24px 20px 0; text-align: center; position: relative; overflow: hidden;
   }
-
   header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+    content: ''; position: absolute; inset: 0; pointer-events: none;
     background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
-
   header::after {
-    content: '';
-    position: absolute;
-    top: -180px; right: -180px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(255,210,0,0.1) 0%, transparent 70%);
-    pointer-events: none;
+    content: ''; position: absolute; top: -180px; right: -180px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,210,0,0.1) 0%, transparent 70%); pointer-events: none;
   }
+  .header-logo { position: relative; z-index: 2; margin-bottom: -40px; }
+  .header-logo img { height: 60px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); }
 
-  .header-logo {
-    position: relative;
-    z-index: 2;
-    margin-bottom: -40px;
-  }
+  .confetti-wrap { position: relative; z-index: 2; padding-bottom: 50px; }
+  .burst-icon { font-size: 5rem; display: block; animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both; margin-bottom: 8px; }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
 
-  .header-logo img {
-    height: 60px;
-    width: auto;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
-  }
-
-  /* ── CONFETTI BURST ── */
-  .confetti-wrap {
-    position: relative;
-    z-index: 2;
-    padding-bottom: 50px;
-  }
-
-  .burst-icon {
-    font-size: 5rem;
-    display: block;
-    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
-    margin-bottom: 8px;
-  }
-
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.3); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  /* ── MAIN CARD ── */
-  .main-wrap {
-    max-width: 680px;
-    margin: -30px auto 0;
-    padding: 0 20px 60px;
-  }
-
+  .main-wrap { max-width: 680px; margin: -30px auto 0; padding: 0 20px 60px; }
   .match-card {
-    background: #fff;
-    border-radius: 22px;
-    box-shadow: 0 20px 70px rgba(0,0,0,0.14);
-    overflow: hidden;
+    background: #fff; border-radius: 22px; box-shadow: 0 20px 70px rgba(0,0,0,0.14); overflow: hidden;
     animation: riseUp 0.7s cubic-bezier(0.34,1.2,0.64,1) 0.3s both;
   }
-
-  @keyframes riseUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes riseUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
   .match-header {
     background: linear-gradient(135deg, var(--green), var(--green-dark));
-    padding: 34px 36px 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 34px 36px 28px; text-align: center; position: relative; overflow: hidden;
   }
-
   .match-header::before {
-    content: '✓';
-    position: absolute;
-    right: -20px; top: -30px;
-    font-size: 12rem;
-    color: rgba(255,255,255,0.06);
-    font-weight: 900;
-    line-height: 1;
+    content: '&#x2713;'; position: absolute; right: -20px; top: -30px; font-size: 12rem;
+    color: rgba(255,255,255,0.06); font-weight: 900; line-height: 1; pointer-events: none;
   }
-
   .check-badge {
-    width: 72px; height: 72px;
-    background: rgba(255,255,255,0.2);
-    border: 3px solid rgba(255,255,255,0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.2rem;
-    margin: 0 auto 16px;
-    animation: spinIn 0.7s ease 0.6s both;
+    width: 72px; height: 72px; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.5);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
+    margin: 0 auto 16px; animation: spinIn 0.7s ease 0.6s both;
   }
-
-  @keyframes spinIn {
-    from { opacity: 0; transform: rotateY(90deg) scale(0.5); }
-    to   { opacity: 1; transform: rotateY(0deg) scale(1); }
-  }
+  @keyframes spinIn { from { opacity: 0; transform: rotateY(90deg) scale(0.5); } to { opacity: 1; transform: rotateY(0deg) scale(1); } }
 
   .match-header h1 {
-    font-family: 'Poppins', sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    font-size: clamp(1.5rem, 4vw, 2.1rem);
-    color: #fff;
-    text-transform: uppercase;
-    -webkit-text-stroke: 1px rgba(37,123,171,0.4);
-    line-height: 1.2;
-    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800;
+    font-size: clamp(1.5rem, 4vw, 2.1rem); color: #fff; text-transform: uppercase;
+    -webkit-text-stroke: 1px rgba(37,123,171,0.4); line-height: 1.2; margin-bottom: 10px;
   }
-
-  .match-header p {
-    color: rgba(255,255,255,0.9);
-    font-size: 1rem;
-    line-height: 1.6;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
+  .match-header p { color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.6; max-width: 480px; margin: 0 auto; }
   .match-header strong { color: #fff; font-weight: 700; }
 
-  /* ── WHAT HAPPENS NEXT ── */
-  .next-steps {
-    padding: 32px 36px;
-  }
-
+  .next-steps { padding: 32px 36px; }
   .next-steps h2 {
-    font-family: 'Poppins', sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    font-size: 1.25rem;
-    color: var(--blue);
-    text-transform: uppercase;
-    -webkit-text-stroke: 0.5px rgba(255,255,255,0.5);
-    margin-bottom: 22px;
-    text-align: center;
+    font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800; font-size: 1.25rem;
+    color: var(--blue); text-transform: uppercase; -webkit-text-stroke: 0.5px rgba(255,255,255,0.5);
+    margin-bottom: 22px; text-align: center;
   }
-
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    position: relative;
-  }
-
+  .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
   .timeline::before {
-    content: '';
-    position: absolute;
-    left: 22px;
-    top: 12px;
-    bottom: 12px;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--green), var(--blue));
-    opacity: 0.25;
+    content: ''; position: absolute; left: 22px; top: 12px; bottom: 12px; width: 2px;
+    background: linear-gradient(to bottom, var(--green), var(--blue)); opacity: 0.25;
   }
-
-  .tl-item {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    padding: 14px 0;
-    position: relative;
-    animation: slideIn 0.5s ease both;
-  }
-
+  .tl-item { display: flex; gap: 18px; align-items: flex-start; padding: 14px 0; position: relative; animation: slideIn 0.5s ease both; }
   .tl-item:nth-child(1) { animation-delay: 0.5s; }
   .tl-item:nth-child(2) { animation-delay: 0.7s; }
   .tl-item:nth-child(3) { animation-delay: 0.9s; }
   .tl-item:nth-child(4) { animation-delay: 1.1s; }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-16px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
   .tl-dot {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue), var(--green));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(37,123,171,0.25);
-    position: relative;
-    z-index: 1;
+    width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--green));
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(37,123,171,0.25); position: relative; z-index: 1;
   }
+  .tl-content h4 { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 3px; }
+  .tl-content p  { font-size: 0.82rem; color: var(--gray); line-height: 1.5; }
 
-  .tl-content h4 {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text);
-    margin-bottom: 3px;
-  }
-
-  .tl-content p {
-    font-size: 0.82rem;
-    color: var(--gray);
-    line-height: 1.5;
-  }
-
-  /* ── SUMMARY BOX ── */
-  .summary-box {
-    background: var(--off-white);
-    border: 1.5px solid #dde8f2;
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin: 0 36px 28px;
-  }
-
+  .summary-box { background: var(--off-white); border: 1.5px solid #dde8f2; border-radius: 14px; padding: 20px 24px; margin: 0 36px 28px; }
   .summary-box h3 {
-    font-family: 'Poppins', sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: var(--blue);
-    text-transform: uppercase;
-    margin-bottom: 14px;
+    font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800; font-size: 0.95rem;
+    color: var(--blue); text-transform: uppercase; margin-bottom: 14px;
   }
-
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 7px 0;
-    border-bottom: 1px solid #e8f0f5;
-    font-size: 0.83rem;
-  }
-
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #e8f0f5; font-size: 0.83rem; }
   .summary-row:last-child { border-bottom: none; }
-
   .summary-row .label { color: var(--gray); }
   .summary-row .value { font-weight: 600; color: var(--text); }
-
   .value.highlight { color: var(--green); }
 
-  /* ── URGENCY BADGE ── */
-  .urgency-bar {
-    background: linear-gradient(135deg, #fff7ed, #fef3c7);
-    border: 1.5px solid #f59e0b;
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 0 36px 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
+  .urgency-bar { background: linear-gradient(135deg, #fff7ed, #fef3c7); border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px 20px; margin: 0 36px 28px; display: flex; align-items: center; gap: 12px; }
   .urgency-bar .ub-icon { font-size: 1.6rem; flex-shrink: 0; }
-
-  .urgency-bar p {
-    font-size: 0.82rem;
-    color: #92400e;
-    line-height: 1.5;
-  }
-
+  .urgency-bar p { font-size: 0.82rem; color: #92400e; line-height: 1.5; }
   .urgency-bar strong { color: #78350f; }
 
-  /* ── CTA ── */
-  .cta-area {
-    padding: 0 36px 32px;
-    text-align: center;
-  }
-
+  .cta-area { padding: 0 36px 32px; text-align: center; }
   .btn-primary {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, var(--green), var(--green-dark));
-    color: #fff;
-    text-decoration: none;
-    border-radius: 12px;
-    padding: 17px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    box-shadow: 0 6px 24px rgba(0,166,81,0.28);
-    margin-bottom: 12px;
-    border: none;
+    display: block; width: 100%; background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff; text-decoration: none; border-radius: 12px; padding: 17px; font-family: 'Poppins', sans-serif;
+    font-size: 1rem; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 6px 24px rgba(0,166,81,0.28); margin-bottom: 12px; border: none;
   }
-
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,166,81,0.38); }
-
   .btn-secondary {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-    color: #fff;
-    text-decoration: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    box-shadow: 0 4px 16px rgba(37,123,171,0.2);
-    border: none;
+    display: block; width: 100%; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: #fff; text-decoration: none; border-radius: 12px; padding: 14px; font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(37,123,171,0.2); border: none;
   }
-
   .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,123,171,0.3); }
+  .cta-note { font-size: 0.74rem; color: var(--gray); margin-top: 14px; }
 
-  .cta-note {
-    font-size: 0.74rem;
-    color: var(--gray);
-    margin-top: 14px;
-  }
-
-  /* ── TRUST BADGES ── */
-  .trust-section {
-    background: #fff;
-    padding: 40px 20px;
-  }
-
-  .trust-title {
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: var(--blue);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .badges-grid {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .badge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    background: var(--off-white);
-    border: 1.5px solid #dde8f2;
-    border-radius: 14px;
-    padding: 20px 22px;
-    min-width: 120px;
-    text-align: center;
-  }
-
+  .trust-section { background: #fff; padding: 40px 20px; }
+  .trust-title { text-align: center; font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800; font-size: 1.1rem; color: var(--blue); text-transform: uppercase; margin-bottom: 24px; }
+  .badges-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; max-width: 700px; margin: 0 auto; }
+  .badge { display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--off-white); border: 1.5px solid #dde8f2; border-radius: 14px; padding: 20px 22px; min-width: 120px; text-align: center; }
   .badge-icon { font-size: 2rem; }
   .badge-text { font-size: 0.75rem; font-weight: 600; color: var(--text); line-height: 1.3; }
 
-  /* ── SHARE / REFER ── */
-  .refer-section {
-    background: linear-gradient(135deg, #0d3d5e, #0a6634);
-    padding: 44px 20px;
-    text-align: center;
-    color: #fff;
-  }
-
+  .refer-section { background: linear-gradient(135deg, #0d3d5e, #0a6634); padding: 44px 20px; text-align: center; color: #fff; }
   .refer-section h3 {
-    font-family: 'Poppins', sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    font-size: clamp(1.2rem, 3vw, 1.7rem);
-    color: var(--blue);
-    text-transform: uppercase;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.7);
-    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800;
+    font-size: clamp(1.2rem, 3vw, 1.7rem); color: var(--blue); text-transform: uppercase;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.7); margin-bottom: 10px;
   }
-
-  .refer-section p {
-    color: rgba(255,255,255,0.8);
-    font-size: 0.9rem;
-    margin-bottom: 22px;
-    max-width: 440px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .share-btns {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
+  .refer-section p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 22px; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .share-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
   .share-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.25);
-    color: #fff;
-    border-radius: 50px;
-    padding: 11px 22px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    backdrop-filter: blur(6px);
+    display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50px; padding: 11px 22px;
+    font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; text-decoration: none; backdrop-filter: blur(6px);
   }
-
   .share-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); }
 
-  /* ── FOOTER ── */
-  footer {
-    background: #0a1f2e;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    padding: 28px 20px;
-    font-size: 0.78rem;
-    line-height: 1.8;
-  }
-
+  footer { background: #0a1f2e; color: rgba(255,255,255,0.5); text-align: center; padding: 28px 20px; font-size: 0.78rem; line-height: 1.8; }
   footer a { color: rgba(255,255,255,0.65); text-decoration: none; }
 
-  /* ── PULSE ANIMATION on call icon ── */
-  .pulse-ring {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
+  .pulse-ring { position: relative; display: inline-flex; align-items: center; justify-content: center; }
   .pulse-ring::before {
-    content: '';
-    position: absolute;
-    width: 54px; height: 54px;
-    border-radius: 50%;
-    border: 3px solid var(--green);
-    animation: pulse 2s ease-out infinite;
-    opacity: 0;
+    content: ''; position: absolute; width: 54px; height: 54px; border-radius: 50%;
+    border: 3px solid var(--green); animation: pulse 2s ease-out infinite; opacity: 0;
   }
-
-  @keyframes pulse {
-    0%   { transform: scale(0.8); opacity: 0.8; }
-    100% { transform: scale(1.8); opacity: 0; }
-  }
+  @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(1.8); opacity: 0; } }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-logo">
     <img src="https://raw.githubusercontent.com/buckleydigital/bsi-site/main/better-solar-installers-australia.png" alt="Better Solar Installers Australia" onerror="this.style.cssText='height:52px;background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px'">
   </div>
   <div class="confetti-wrap">
-    <span class="burst-icon">🎉</span>
+    <span class="burst-icon">&#x1F389;</span>
   </div>
 </header>
 
-<!-- MAIN CARD -->
 <div class="main-wrap">
   <div class="match-card">
 
-    <!-- GREEN HEADER -->
     <div class="match-header">
-      <div class="check-badge pulse-ring">✅</div>
+      <div class="check-badge pulse-ring">&#x2705;</div>
       <h1>You're Matched With Your<br>#1 Local Installer!</h1>
       <p>We've found your top-rated, pre-vetted solar installer in your area. <strong>You'll shortly receive a call or text</strong> so we can prepare your obligation-free solar quote.</p>
     </div>
 
-    <!-- WHAT HAPPENS NEXT -->
     <div class="next-steps">
       <h2>What Happens Next</h2>
       <div class="timeline">
         <div class="tl-item">
-          <div class="tl-dot">📞</div>
+          <div class="tl-dot">&#x1F4DE;</div>
           <div class="tl-content">
             <h4>You'll Receive a Call or Text Shortly</h4>
-            <p>Your matched local installer will reach out to confirm your details and discuss your needs — usually within a few hours during business hours.</p>
+            <p>Your matched local installer will reach out to confirm your details and discuss your needs &mdash; usually within a few hours during business hours.</p>
           </div>
         </div>
         <div class="tl-item">
-          <div class="tl-dot">📋</div>
+          <div class="tl-dot">&#x1F4CB;</div>
           <div class="tl-content">
             <h4>Your Free Tailored Quote is Prepared</h4>
-            <p>Your installer will design a custom solar or battery solution for your home — factoring in your roof, usage, and location — at the best available rate.</p>
+            <p>Your installer will design a custom solar or battery solution for your home &mdash; factoring in your roof, usage, and location &mdash; at the best available rate.</p>
           </div>
         </div>
         <div class="tl-item">
-          <div class="tl-dot">💰</div>
+          <div class="tl-dot">&#x1F4B0;</div>
           <div class="tl-content">
-            <h4>Rebates & Incentives Confirmed*</h4>
+            <h4>Rebates &amp; Incentives Confirmed*</h4>
             <p>They'll confirm what government rebates and feed-in tariffs you may qualify for under the STC scheme, potentially saving thousands off the upfront cost.</p>
           </div>
         </div>
         <div class="tl-item">
-          <div class="tl-dot">☀️</div>
+          <div class="tl-dot">&#x2600;&#xFE0F;</div>
           <div class="tl-content">
-            <h4>You Decide — No Pressure</h4>
+            <h4>You Decide &mdash; No Pressure</h4>
             <p>The quote is 100% obligation-free. Take your time, ask as many questions as you like. There's absolutely no pressure to proceed.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SUMMARY -->
     <div class="summary-box" id="summaryBox">
       <h3>Your Quote Summary</h3>
-      <div class="summary-row"><span class="label">Name</span><span class="value" id="sumName">—</span></div>
-      <div class="summary-row"><span class="label">Looking For</span><span class="value highlight" id="sumNeed">—</span></div>
-      <div class="summary-row"><span class="label">Timeline</span><span class="value" id="sumTimeline">—</span></div>
-      <div class="summary-row"><span class="label">Location</span><span class="value" id="sumLocation">—</span></div>
+      <div class="summary-row"><span class="label">Name</span><span class="value" id="sumName">&mdash;</span></div>
+      <div class="summary-row"><span class="label">Looking For</span><span class="value highlight" id="sumNeed">&mdash;</span></div>
+      <div class="summary-row"><span class="label">Timeline</span><span class="value" id="sumTimeline">&mdash;</span></div>
+      <div class="summary-row"><span class="label">Postcode</span><span class="value" id="sumPostcode">&mdash;</span></div>
     </div>
 
-    <!-- URGENCY -->
     <div class="urgency-bar">
-      <span class="ub-icon">⏰</span>
-      <p><strong>High demand in your area.</strong> Installer availability is limited — your slot has been reserved for the next 24 hours. Keep your phone nearby!</p>
+      <span class="ub-icon">&#x23F0;</span>
+      <p><strong>High demand in your area.</strong> Installer availability is limited &mdash; your slot has been reserved for the next 24 hours. Keep your phone nearby!</p>
     </div>
 
-    <!-- CTA -->
     <div class="cta-area">
-      <a href="tel:1300000000" class="btn-primary">📞 Call Your Installer Now</a>
-      <a href="sms:0400000000" class="btn-secondary">💬 Send a Text Instead</a>
-      <p class="cta-note">🔒 Your details are secure. We'll never share your information with third parties.</p>
+      <a href="tel:1300000000" class="btn-primary">&#x1F4DE; Call Your Installer Now</a>
+      <a href="sms:0400000000" class="btn-secondary">&#x1F4AC; Send a Text Instead</a>
+      <p class="cta-note">&#x1F512; Your details are secure. We'll never share your information with third parties.</p>
     </div>
 
-  </div><!-- /match-card -->
+  </div>
 </div>
 
-<!-- TRUST BADGES -->
 <section class="trust-section">
   <div class="trust-title">Why You're In Safe Hands</div>
   <div class="badges-grid">
-    <div class="badge">
-      <span class="badge-icon">✅</span>
-      <span class="badge-text">Pre-Vetted<br>Installer</span>
-    </div>
-    <div class="badge">
-      <span class="badge-icon">🔒</span>
-      <span class="badge-text">Licensed &<br>Insured</span>
-    </div>
-    <div class="badge">
-      <span class="badge-icon">⭐</span>
-      <span class="badge-text">4.9★ Avg<br>Rating</span>
-    </div>
-    <div class="badge">
-      <span class="badge-icon">💰</span>
-      <span class="badge-text">Best Rates<br>Guaranteed</span>
-    </div>
-    <div class="badge">
-      <span class="badge-icon">🚫</span>
-      <span class="badge-text">No Cowboys<br>Ever</span>
-    </div>
-    <div class="badge">
-      <span class="badge-icon">🇦🇺</span>
-      <span class="badge-text">100%<br>Australian</span>
-    </div>
+    <div class="badge"><span class="badge-icon">&#x2705;</span><span class="badge-text">Pre-Vetted<br>Installer</span></div>
+    <div class="badge"><span class="badge-icon">&#x1F512;</span><span class="badge-text">Licensed &amp;<br>Insured</span></div>
+    <div class="badge"><span class="badge-icon">&#x2B50;</span><span class="badge-text">4.9&#x2605; Avg<br>Rating</span></div>
+    <div class="badge"><span class="badge-icon">&#x1F4B0;</span><span class="badge-text">Best Rates<br>Guaranteed</span></div>
+    <div class="badge"><span class="badge-icon">&#x1F6AB;</span><span class="badge-text">No Cowboys<br>Ever</span></div>
+    <div class="badge"><span class="badge-icon">&#x1F1E6;&#x1F1FA;</span><span class="badge-text">100%<br>Australian</span></div>
   </div>
 </section>
 
-<!-- REFER A FRIEND -->
 <section class="refer-section">
   <h3>Know Someone Who Needs Solar?</h3>
-  <p>Share Better Solar Installers with friends & family and help them slash their power bills too!</p>
+  <p>Share Better Solar Installers with friends &amp; family and help them slash their power bills too!</p>
   <div class="share-btns">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://bettersolarinstallers.com.au" target="_blank" class="share-btn">
-      👥 Share on Facebook
-    </a>
-    <a href="https://api.whatsapp.com/send?text=I%20just%20got%20matched%20with%20a%20pre-vetted%20solar%20installer%20through%20Better%20Solar%20Installers%20Australia%20-%20totally%20free%20and%20obligation-free!%20Check%20it%20out%3A%20https%3A%2F%2Fbettersolarinstallers.com.au" target="_blank" class="share-btn">
-      💬 Share via WhatsApp
-    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://bettersolarinstallers.com.au" target="_blank" class="share-btn">&#x1F465; Share on Facebook</a>
+    <a href="https://api.whatsapp.com/send?text=I%20just%20got%20matched%20with%20a%20pre-vetted%20solar%20installer%20through%20Better%20Solar%20Installers%20Australia%20-%20totally%20free%20and%20obligation-free!%20Check%20it%20out%3A%20https%3A%2F%2Fbettersolarinstallers.com.au" target="_blank" class="share-btn">&#x1F4AC; Share via WhatsApp</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p><strong style="color:rgba(255,255,255,0.8);">Better Solar Installers Australia</strong></p>
   <p>Your #1 solar &amp; battery installer matching service across Australia.</p>
   <p style="margin-top:8px;">
-    <a href="#">Privacy Policy</a> &nbsp;|&nbsp;
-    <a href="#">Terms of Service</a> &nbsp;|&nbsp;
-    <a href="index.html">← Back to Home</a>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp;
+    <a href="index.html">&larr; Back to Home</a>
   </p>
-  <p style="margin-top:12px; font-size:0.7rem; opacity:0.6;">
+  <p style="margin-top:12px;font-size:0.7rem;opacity:0.6;">
     *Rebate availability subject to federal and state government eligibility criteria and scheme availability at time of installation. Not all homeowners will qualify.
   </p>
 </footer>
 
 <script>
-  // Populate summary from session storage
-  const data = JSON.parse(sessionStorage.getItem('bsiLead') || '{}');
+  var data = JSON.parse(sessionStorage.getItem('bsiLead') || '{}');
 
-  const needMap = {
-    solar: '☀️ Solar Panels',
-    battery: '🔋 Battery Storage',
-    both: '⚡ Solar + Battery',
-    upgrade: '🔧 Upgrade Existing'
+  var needMap = {
+    solar:   '&#x2600;&#xFE0F; Solar Panels',
+    battery: '&#x1F50B; Battery Storage',
+    both:    '&#x26A1; Solar + Battery',
+    upgrade: '&#x1F527; Upgrade Existing'
   };
 
-  const timelineMap = {
-    asap: '🚀 ASAP (within 1 month)',
-    '1-3months': '📅 1–3 Months',
-    '3-6months': '🗓️ 3–6 Months',
-    exploring: '🔍 Just Exploring'
+  var timelineMap = {
+    asap:       '&#x1F680; ASAP (within 1 month)',
+    '1-3months':'&#x1F4C5; 1&ndash;3 Months',
+    '3-6months':'&#x1F5D3;&#xFE0F; 3&ndash;6 Months',
+    exploring:  '&#x1F50D; Just Exploring'
   };
 
   if (data.firstName) {
-    document.getElementById('sumName').textContent = data.firstName + ' ' + (data.lastName || '');
-    document.getElementById('sumNeed').textContent = needMap[data.need] || '—';
-    document.getElementById('sumTimeline').textContent = timelineMap[data.timeline] || '—';
-    document.getElementById('sumLocation').textContent = (data.suburb && data.state) ? data.suburb + ', ' + data.state : '—';
+    document.getElementById('sumName').textContent     = data.firstName + ' ' + (data.lastName || '');
+    document.getElementById('sumNeed').innerHTML       = needMap[data.need] || '&mdash;';
+    document.getElementById('sumTimeline').innerHTML   = timelineMap[data.timeline] || '&mdash;';
+    document.getElementById('sumPostcode').textContent = data.postcode || '&mdash;';
   } else {
-    // Hide summary if no data (direct navigation)
     document.getElementById('summaryBox').style.display = 'none';
   }
 </script>
