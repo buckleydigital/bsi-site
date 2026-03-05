@@ -924,7 +924,7 @@ fbq('track','PageView');
 
           <div class="field-group">
             <label>Email Address</label>
-            <input type="email" id="email" placeholder="you@example.com.au">
+            <input type="email" id="email" placeholder="you@example.com.online">
             <div class="error-msg" id="err-email">Please enter a valid email address</div>
           </div>
 
@@ -1077,16 +1077,16 @@ fbq('track','PageView');
   <p><strong style="color:rgba(255,255,255,0.8);">Better Solar Installers Australia</strong></p>
   <p>Connecting Australian homeowners with their #1 local solar &amp; battery installer since 2019.</p>
   <p style="margin-top:8px;">
-    <a href="#">Privacy Policy</a> &nbsp;|&nbsp;
-    <a href="#">Terms of Service</a> &nbsp;|&nbsp;
-    <a href="#">Contact Us</a>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp;
+    <a href="/cdn-cgi/l/email-protection#34575b5a4055574074565140405146475b5855465d5a47405558585146471a575b591a5541">Contact Us</a>
   </p>
   <p style="margin-top:12px; font-size:0.7rem; opacity:0.6;">
     *Rebate availability subject to federal and state government eligibility criteria and scheme availability at time of installation. Not all homeowners will qualify. Better Solar Installers Australia is a referral matching service and does not provide installation services directly. All installers are independently licensed and insured.
   </p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const formData = {};
   const totalSteps = 4;
 
@@ -1115,7 +1115,12 @@ fbq('track','PageView');
     const next = current + 1;
     document.getElementById('step' + next).classList.add('active');
     updateProgress(next);
-    window.scrollTo({ top: document.querySelector('.survey-card').offsetTop - 80, behavior: 'smooth' });
+    // Only scroll if the survey card is above the current viewport
+    const card = document.querySelector('.survey-card');
+    const cardTop = card.getBoundingClientRect().top;
+    if (cardTop < 0) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   function prevStep(current) {
@@ -1194,11 +1199,4 @@ fbq('track','PageView');
 
   // Live phone format
   document.addEventListener('DOMContentLoaded', () => {
-    const ph = document.getElementById('phone');
-    if(ph) ph.addEventListener('input', function() {
-      this.value = this.value.replace(/[^\d\s]/g,'');
-    });
-  });
-</script>
-</body>
-</html>
+    const ph = document.getEl
