@@ -1087,117 +1087,106 @@ fbq('track','PageView');
   </p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const formData = {};
-  const totalSteps = 4;
+<script>
+  var formData = {};
+  var totalSteps = 4;
 
-  function updateProgress(step) {
-    const pct = ((step - 1) / totalSteps) * 100;
+  window.updateProgress = function(step) {
+    var pct = ((step - 1) / totalSteps) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
-  }
+  };
 
-  function selectOpt(el, key, val) {
-    el.closest('.option-grid').querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  window.selectOpt = function(el, key, val) {
+    el.closest('.option-grid').querySelectorAll('.opt-card').forEach(function(c){ c.classList.remove('selected'); });
     el.classList.add('selected');
     formData[key] = val;
-    const stepNum = el.closest('.step').id.replace('step','');
+    var stepNum = el.closest('.step').id.replace('step','');
     document.getElementById('btn' + stepNum).disabled = false;
-  }
+  };
 
-  function selectTL(el, key, val) {
-    el.closest('.timeline-grid').querySelectorAll('.tl-opt').forEach(c => c.classList.remove('selected'));
+  window.selectTL = function(el, key, val) {
+    el.closest('.timeline-grid').querySelectorAll('.tl-opt').forEach(function(c){ c.classList.remove('selected'); });
     el.classList.add('selected');
     formData[key] = val;
     document.getElementById('btn2').disabled = false;
-  }
+  };
 
-  function nextStep(current) {
+  window.nextStep = function(current) {
     document.getElementById('step' + current).classList.remove('active');
-    const next = current + 1;
+    var next = current + 1;
     document.getElementById('step' + next).classList.add('active');
     updateProgress(next);
-    // Only scroll if the survey card is above the current viewport
-    const card = document.querySelector('.survey-card');
-    const cardTop = card.getBoundingClientRect().top;
-    if (cardTop < 0) {
+    var card = document.querySelector('.survey-card');
+    if (card.getBoundingClientRect().top < 0) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
+  };
 
-  function prevStep(current) {
+  window.prevStep = function(current) {
     document.getElementById('step' + current).classList.remove('active');
-    const prev = current - 1;
+    var prev = current - 1;
     document.getElementById('step' + prev).classList.add('active');
     updateProgress(prev);
-  }
+  };
 
   function validateField(id, validator) {
-    const el = document.getElementById(id);
-    const err = document.getElementById('err-' + id);
+    var el  = document.getElementById(id);
+    var err = document.getElementById('err-' + id);
     if (!validator(el.value.trim())) {
       el.classList.add('error');
-      if(err) err.style.display = 'block';
+      if (err) err.style.display = 'block';
       return false;
     }
     el.classList.remove('error');
-    if(err) err.style.display = 'none';
+    if (err) err.style.display = 'none';
     return true;
   }
 
-  async function submitForm() {
-    let valid = true;
-    valid = validateField('firstName', v => v.length > 1) && valid;
-    valid = validateField('lastName',  v => v.length > 1) && valid;
-    valid = validateField('phone',     v => /^04\d{8}$/.test(v.replace(/\s/g,''))) && valid;
-    valid = validateField('email',     v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) && valid;
-    valid = validateField('suburb',    v => v.length > 1) && valid;
-    valid = validateField('state',     v => v !== '') && valid;
+  window.submitForm = async function() {
+    var valid = true;
+    valid = validateField('firstName', function(v){ return v.length > 1; }) && valid;
+    valid = validateField('lastName',  function(v){ return v.length > 1; }) && valid;
+    valid = validateField('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && valid;
+    valid = validateField('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && valid;
+    valid = validateField('suburb',    function(v){ return v.length > 1; }) && valid;
+    valid = validateField('state',     function(v){ return v !== ''; }) && valid;
 
     if (!valid) return;
 
-    // Collect final data
-    formData.firstName = document.getElementById('firstName').value.trim();
-    formData.lastName  = document.getElementById('lastName').value.trim();
-    formData.phone     = document.getElementById('phone').value.trim();
-    formData.email     = document.getElementById('email').value.trim();
-    formData.suburb    = document.getElementById('suburb').value.trim();
-    formData.state     = document.getElementById('state').value;
+    formData.firstName   = document.getElementById('firstName').value.trim();
+    formData.lastName    = document.getElementById('lastName').value.trim();
+    formData.phone       = document.getElementById('phone').value.trim();
+    formData.email       = document.getElementById('email').value.trim();
+    formData.suburb      = document.getElementById('suburb').value.trim();
+    formData.state       = document.getElementById('state').value;
     formData.submittedAt = new Date().toISOString();
 
-    // Disable button & show loading state
-    const btn = document.querySelector('.btn-submit');
+    var btn = document.querySelector('.btn-submit');
     btn.disabled = true;
-    btn.textContent = 'Submitting…';
+    btn.textContent = 'Submitting\u2026';
 
-    // Fire Meta Pixel Lead event
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', {
-        content_name: formData.need,
-        content_category: 'Solar Quote',
-        value: 0,
-        currency: 'AUD'
-      });
+      fbq('track', 'Lead', { content_name: formData.need, content_category: 'Solar Quote', value: 0, currency: 'AUD' });
     }
 
-    // POST to Make webhook
     try {
       await fetch('https://hook.eu2.make.com/uew3g7lcjf3mvucpjmbsd781ww18betb', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-    } catch (e) {
-      // Silently continue — don't block redirect if webhook fails
+    } catch(e) {
       console.warn('Webhook error:', e);
     }
 
-    // Store for thank you page
     sessionStorage.setItem('bsiLead', JSON.stringify(formData));
-
-    // Redirect
     window.location.href = 'thankyou.html';
-  }
+  };
 
-  // Live phone format
-  document.addEventListener('DOMContentLoaded', () => {
-    const ph = document.getEl
+  document.addEventListener('DOMContentLoaded', function() {
+    var ph = document.getElementById('phone');
+    if (ph) ph.addEventListener('input', function(){ this.value = this.value.replace(/[^\d\s]/g,''); });
+  });
+</script>
+</body>
+</html>
