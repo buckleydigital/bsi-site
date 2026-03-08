@@ -17,7 +17,6 @@ fbq('track','PageView');
 fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', currency: 'AUD', value: 0 });
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2204232549924782&ev=CompleteRegistration&noscript=1"/></noscript>
-<!-- End Meta Pixel -->
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -57,10 +56,6 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
     background: linear-gradient(135deg, var(--green), var(--green-dark));
     padding: 34px 36px 28px; text-align: center; position: relative; overflow: hidden;
   }
-  .match-header::before {
-    content: '&#x2713;'; position: absolute; right: -20px; top: -30px; font-size: 12rem;
-    color: rgba(255,255,255,0.06); font-weight: 900; line-height: 1; pointer-events: none;
-  }
   .check-badge {
     width: 72px; height: 72px; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.5);
     border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
@@ -71,7 +66,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
   .match-header h1 {
     font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800;
     font-size: clamp(1.5rem, 4vw, 2.1rem); color: #fff; text-transform: uppercase;
-    -webkit-text-stroke: 1px rgba(37,123,171,0.4); line-height: 1.2; margin-bottom: 10px;
+    line-height: 1.2; margin-bottom: 10px;
   }
   .match-header p { color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.6; max-width: 480px; margin: 0 auto; }
   .match-header strong { color: #fff; font-weight: 700; }
@@ -79,8 +74,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
   .next-steps { padding: 32px 36px; }
   .next-steps h2 {
     font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800; font-size: 1.25rem;
-    color: var(--blue); text-transform: uppercase; -webkit-text-stroke: 0.5px rgba(255,255,255,0.5);
-    margin-bottom: 22px; text-align: center;
+    color: var(--blue); text-transform: uppercase; margin-bottom: 22px; text-align: center;
   }
   .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
   .timeline::before {
@@ -117,22 +111,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
   .urgency-bar p { font-size: 0.82rem; color: #92400e; line-height: 1.5; }
   .urgency-bar strong { color: #78350f; }
 
-  .cta-area { padding: 0 36px 32px; text-align: center; }
-  .btn-primary {
-    display: block; width: 100%; background: linear-gradient(135deg, var(--green), var(--green-dark));
-    color: #fff; text-decoration: none; border-radius: 12px; padding: 17px; font-family: 'Poppins', sans-serif;
-    font-size: 1rem; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.25s;
-    box-shadow: 0 6px 24px rgba(0,166,81,0.28); margin-bottom: 12px; border: none;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,166,81,0.38); }
-  .btn-secondary {
-    display: block; width: 100%; background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-    color: #fff; text-decoration: none; border-radius: 12px; padding: 14px; font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.25s;
-    box-shadow: 0 4px 16px rgba(37,123,171,0.2); border: none;
-  }
-  .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,123,171,0.3); }
-  .cta-note { font-size: 0.74rem; color: var(--gray); margin-top: 14px; }
+  .privacy-note { text-align: center; font-size: 0.74rem; color: var(--gray); padding: 0 36px 32px; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
   .trust-section { background: #fff; padding: 40px 20px; }
   .trust-title { text-align: center; font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 800; font-size: 1.1rem; color: var(--blue); text-transform: uppercase; margin-bottom: 24px; }
@@ -185,7 +164,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
     <div class="match-header">
       <div class="check-badge pulse-ring">&#x2705;</div>
       <h1>You're Matched With Your<br>#1 Local Installer!</h1>
-      <p>We've found your top-rated, pre-vetted solar installer in your area. <strong>You'll shortly receive a call or text</strong> so we can prepare your obligation-free solar quote.</p>
+      <p>We've found your top-rated, pre-vetted solar installer in your area. <strong>You'll receive a call or text shortly</strong> so we can prepare your obligation-free solar quote.</p>
     </div>
 
     <div class="next-steps">
@@ -202,7 +181,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
           <div class="tl-dot">&#x1F4CB;</div>
           <div class="tl-content">
             <h4>Your Free Tailored Quote is Prepared</h4>
-            <p>Your installer will design a custom solar or battery solution for your home &mdash; factoring in your roof, usage, and location &mdash; at the best available rate.</p>
+            <p>Your installer will design a custom solar solution for your home &mdash; factoring in your roof, usage, and location &mdash; at the best available rate.</p>
           </div>
         </div>
         <div class="tl-item">
@@ -225,21 +204,17 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
     <div class="summary-box" id="summaryBox">
       <h3>Your Quote Summary</h3>
       <div class="summary-row"><span class="label">Name</span><span class="value" id="sumName">&mdash;</span></div>
-      <div class="summary-row"><span class="label">Looking For</span><span class="value highlight" id="sumNeed">&mdash;</span></div>
-      <div class="summary-row"><span class="label">Timeline</span><span class="value" id="sumTimeline">&mdash;</span></div>
+      <div class="summary-row"><span class="label">Home Owner</span><span class="value highlight" id="sumOwner">&mdash;</span></div>
+      <div class="summary-row"><span class="label">Quarterly Bill</span><span class="value highlight" id="sumBill">&mdash;</span></div>
       <div class="summary-row"><span class="label">Postcode</span><span class="value" id="sumPostcode">&mdash;</span></div>
     </div>
 
     <div class="urgency-bar">
       <span class="ub-icon">&#x23F0;</span>
-      <p><strong>High demand in your area.</strong> Installer availability is limited &mdash; your slot has been reserved for the next 24 hours. Keep your phone nearby!</p>
+      <p><strong>High demand in your area.</strong> Installer availability is limited &mdash; your slot has been reserved. Keep your phone nearby!</p>
     </div>
 
-    <div class="cta-area">
-      <a href="tel:1300000000" class="btn-primary">&#x1F4DE; Call Your Installer Now</a>
-      <a href="sms:0400000000" class="btn-secondary">&#x1F4AC; Send a Text Instead</a>
-      <p class="cta-note">&#x1F512; Your details are secure. We'll never share your information with third parties.</p>
-    </div>
+    <div class="privacy-note">&#x1F512; Your details are 100% secure. We never share your information with third parties.</div>
 
   </div>
 </div>
@@ -260,8 +235,8 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
   <h3>Know Someone Who Needs Solar?</h3>
   <p>Share Better Solar Installers with friends &amp; family and help them slash their power bills too!</p>
   <div class="share-btns">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://bettersolarinstallers.com.au" target="_blank" class="share-btn">&#x1F465; Share on Facebook</a>
-    <a href="https://api.whatsapp.com/send?text=I%20just%20got%20matched%20with%20a%20pre-vetted%20solar%20installer%20through%20Better%20Solar%20Installers%20Australia%20-%20totally%20free%20and%20obligation-free!%20Check%20it%20out%3A%20https%3A%2F%2Fbettersolarinstallers.com.au" target="_blank" class="share-btn">&#x1F4AC; Share via WhatsApp</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://bettersolarinstallers.online/darling-downs" target="_blank" class="share-btn">&#x1F465; Share on Facebook</a>
+    <a href="https://api.whatsapp.com/send?text=I%20just%20got%20matched%20with%20a%20pre-vetted%20local%20solar%20installer%20through%20Better%20Solar%20Installers%20-%20totally%20free%20and%20obligation-free!%20Check%20it%20out%3A%20https%3A%2F%2Fbettersolarinstallers.online%2Fdarling-downs" target="_blank" class="share-btn">&#x1F4AC; Share via WhatsApp</a>
   </div>
 </section>
 
@@ -271,7 +246,7 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
   <p style="margin-top:8px;">
     <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
     <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp;
-    <a href="index.html">&larr; Back to Home</a>
+    <a href="darling-downs.html">&larr; Back</a>
   </p>
   <p style="margin-top:12px;font-size:0.7rem;opacity:0.6;">
     *Rebate availability subject to federal and state government eligibility criteria and scheme availability at time of installation. Not all homeowners will qualify.
@@ -281,25 +256,11 @@ fbq('track','CompleteRegistration', { content_name: 'Solar Quote Request', curre
 <script>
   var data = JSON.parse(sessionStorage.getItem('bsiLead') || '{}');
 
-  var needMap = {
-    solar:   '&#x2600;&#xFE0F; Solar Panels',
-    battery: '&#x1F50B; Battery Storage',
-    both:    '&#x26A1; Solar + Battery',
-    upgrade: '&#x1F527; Upgrade Existing'
-  };
-
-  var timelineMap = {
-    asap:       '&#x1F680; ASAP (within 1 month)',
-    '1-3months':'&#x1F4C5; 1&ndash;3 Months',
-    '3-6months':'&#x1F5D3;&#xFE0F; 3&ndash;6 Months',
-    exploring:  '&#x1F50D; Just Exploring'
-  };
-
   if (data.firstName) {
     document.getElementById('sumName').textContent     = data.firstName + ' ' + (data.lastName || '');
-    document.getElementById('sumNeed').innerHTML       = needMap[data.need] || '&mdash;';
-    document.getElementById('sumTimeline').innerHTML   = timelineMap[data.timeline] || '&mdash;';
-    document.getElementById('sumPostcode').textContent = data.postcode || '&mdash;';
+    document.getElementById('sumOwner').textContent    = data.ownsHome ? 'Yes' : 'No';
+    document.getElementById('sumBill').textContent     = data.quarterlyBill || '—';
+    document.getElementById('sumPostcode').textContent = data.postcode || '—';
   } else {
     document.getElementById('summaryBox').style.display = 'none';
   }
