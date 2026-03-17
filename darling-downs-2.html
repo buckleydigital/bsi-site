@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700;1,800&display=swap" rel="stylesheet">
 
 <!-- Cloudflare Turnstile -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 
 <!-- Meta Pixel -->
 <script>
@@ -581,13 +581,9 @@ footer strong { color: rgba(255,255,255,0.8); }
             <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
           </div>
 
-          <!-- Cloudflare Turnstile -->
+          <!-- Cloudflare Turnstile (rendered explicitly when step 4 is shown) -->
           <div class="turnstile-row">
-            <div class="cf-turnstile"
-                 data-sitekey="0x4AAAAAACsCE8uno233U8Lk"
-                 data-callback="onTurnstileSuccess"
-                 data-expired-callback="onTurnstileExpire">
-            </div>
+            <div id="turnstile-container"></div>
           </div>
 
           <button class="btn-submit" id="submitBtn" disabled onclick="submitForm()">
@@ -804,6 +800,8 @@ footer strong { color: rgba(255,255,255,0.8); }
     }
   }
 
+  var turnstileRendered = false;
+
   function goToStep(from, to) {
     document.getElementById('step' + from).classList.remove('active');
     document.getElementById('step' + to).classList.add('active');
@@ -812,6 +810,15 @@ footer strong { color: rgba(255,255,255,0.8); }
     var rect = card.getBoundingClientRect();
     if (rect.top < 60) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Render Turnstile only once step 4 is visible
+    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+      turnstileRendered = true;
+      turnstile.render('#turnstile-container', {
+        sitekey: '0x4AAAAAACsCE8uno233U8Lk',
+        callback: function(token) { onTurnstileSuccess(token); },
+        'expired-callback': function() { onTurnstileExpire(); }
+      });
     }
   }
 
