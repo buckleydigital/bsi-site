@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Solar Quote – Sydney | Better Solar Installers</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 
 <!-- Meta Pixel -->
 <script>
@@ -255,6 +256,7 @@ body { font-family: 'Poppins', sans-serif; color: var(--text); background: var(-
   text-align: center; font-size: 0.69rem; color: var(--gray);
   margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 4px;
 }
+.turnstile-row { margin-bottom: 16px; }
 
 /* ── BELOW FOLD ── */
 
@@ -553,7 +555,11 @@ footer strong { color: rgba(255,255,255,0.8); }
             <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
           </div>
 
-          <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+          <div class="turnstile-row">
+            <div id="turnstile-container"></div>
+          </div>
+
+          <button class="btn-submit" id="submitBtn" disabled onclick="submitForm()">
             🎯 Get My Free Matched Quote →
           </button>
           <div class="privacy-note">🔒 100% secure — we never share your details with third parties</div>
@@ -733,29 +739,54 @@ footer strong { color: rgba(255,255,255,0.8); }
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  var formData = {};
+  var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
+  var TOTAL_STEPS = 4;
+  var formData = { source: 'sydney' };
+  var turnstileToken = '';
 
-  function setProgress(step) {
-    var pct = ((step - 1) / 4) * 100;
+  function onTurnstileSuccess(token) {
+    turnstileToken = token;
+    document.getElementById('submitBtn').disabled = false;
+  }
+  function onTurnstileExpire() {
+    turnstileToken = '';
+    document.getElementById('submitBtn').disabled = true;
+  }
+
+  window.updateProgress = function(step) {
+    var pct = ((step - 1) / TOTAL_STEPS) * 100;
     document.getElementById('progFill').style.width = pct + '%';
-    for (var i = 1; i <= 4; i++) {
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
       var dot = document.getElementById('dot' + i);
       if (!dot) continue;
-      dot.className = 'dot' + (i <= step ? ' active' : '');
+      dot.className = 'dot';
+      if (i < step) dot.classList.add('done');
+      else if (i === step) dot.classList.add('active');
     }
-  }
+  };
 
-  function goToStep(from, to) {
+  var turnstileRendered = false;
+
+  window.goToStep = function(from, to) {
     document.getElementById('step' + from).classList.remove('active');
     document.getElementById('step' + to).classList.add('active');
-    setProgress(to);
+    updateProgress(to);
     var card = document.querySelector('.survey-card');
-    var rect = card.getBoundingClientRect();
-    if (rect.top < 60) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+    if (card.getBoundingClientRect().top < 60) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+      turnstileRendered = true;
+      turnstile.render('#turnstile-container', {
+        sitekey: '0x4AAAAAACsCE8uno233U8Lk',
+        callback: function(token) { onTurnstileSuccess(token); },
+        'expired-callback': function() { onTurnstileExpire(); }
+      });
+    }
+  };
 
   window.pickOwner = function(owns, el) {
-    formData.ownsHome = owns;
+    formData.is_homeowner = owns;
     document.querySelectorAll('.yn-card').forEach(function(c) { c.classList.remove('selected'); });
     el.classList.add('selected');
     if (!owns) {
@@ -771,14 +802,14 @@ footer strong { color: rgba(255,255,255,0.8); }
   window.pickBill = function(el, val) {
     document.querySelectorAll('#step2 .bill-opt').forEach(function(b) { b.classList.remove('selected'); });
     el.classList.add('selected');
-    formData.quarterlyBill = val;
+    formData.avg_quarterly_bill = val;
     setTimeout(function() { goToStep(2, 3); }, 280);
   };
 
   window.pickTimeline = function(el, val) {
     document.querySelectorAll('#step3 .bill-opt').forEach(function(b) { b.classList.remove('selected'); });
     el.classList.add('selected');
-    formData.timeline = val;
+    formData.purchase_timeline = val;
     setTimeout(function() { goToStep(3, 4); }, 280);
   };
 
@@ -800,30 +831,33 @@ footer strong { color: rgba(255,255,255,0.8); }
     ok = validate('postcode',  function(v){ return /^\d{4}$/.test(v); }) && ok;
     if (!ok) return;
 
-    formData.firstName   = document.getElementById('firstName').value.trim();
-    formData.lastName    = document.getElementById('lastName').value.trim();
-    formData.phone       = document.getElementById('phone').value.trim();
-    formData.email       = document.getElementById('email').value.trim();
-    formData.postcode    = document.getElementById('postcode').value.trim();
-    formData.submittedAt = new Date().toISOString();
-    formData.source      = 'sydney-lp';
+    if (!turnstileToken) {
+      alert('Please complete the security check before submitting.');
+      return;
+    }
 
-    var btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Matching you now…';
+    var firstName = document.getElementById('firstName').value.trim();
+    var lastName  = document.getElementById('lastName').value.trim();
+
+    formData.firstName    = firstName;
+    formData.lastName     = lastName;
+    formData.name         = firstName + ' ' + lastName;
+    formData.email        = document.getElementById('email').value.trim();
+    formData.phone        = document.getElementById('phone').value.trim().replace(/\s/g, '');
+    formData.postcode     = document.getElementById('postcode').value.trim();
+    formData.submitted_at = new Date().toISOString();
+    formData['cf-turnstile-response'] = turnstileToken;
+
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Matching you now\u2026';
     document.getElementById('overlay').classList.add('show');
 
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', {
-        content_name: 'Solar Quote - Sydney',
-        content_category: 'Solar',
-        value: 0,
-        currency: 'AUD'
-      });
+      fbq('track', 'Lead', { content_name: 'Solar Quote', content_category: 'Solar', value: 0, currency: 'AUD' });
     }
 
     try {
-      await fetch('https://hook.eu2.make.com/yid4brgt733wmwpdb6e750tpaghys7i4', {
+      await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -832,6 +866,7 @@ footer strong { color: rgba(255,255,255,0.8); }
       console.warn('Webhook error:', e);
     }
 
+    sessionStorage.setItem('bsiLead', JSON.stringify(formData));
     window.location.href = 'thankyou.html';
   };
 
@@ -841,7 +876,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     var pc = document.getElementById('postcode');
     if (pc) pc.addEventListener('input', function(){ this.value = this.value.replace(/\D/g,'').slice(0,4); });
   });
-
 </script>
 </body>
 </html>
