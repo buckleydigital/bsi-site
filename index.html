@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Better Solar Installers Australia – Free Quote</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -379,6 +380,10 @@ fbq('track','PageView');
             <div class="error-msg" id="err-postcode">Please enter a valid 4-digit Australian postcode</div>
           </div>
 
+          <div style="margin-bottom:16px;">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAACsCE8uno233U8Lk" data-theme="light"></div>
+          </div>
+
           <button class="btn-next btn-submit" onclick="submitForm()">
             &#x1F3AF; Get My Free Matched Quote &rarr;
           </button>
@@ -538,6 +543,10 @@ fbq('track','PageView');
     formData.postcode    = document.getElementById('postcode').value.trim();
     formData.submittedAt = new Date().toISOString();
 
+    var turnstileEl = document.querySelector('[name="cf-turnstile-response"]');
+    var turnstileToken = turnstileEl ? turnstileEl.value : '';
+    formData['cf-turnstile-response'] = turnstileToken;
+
     var btn = document.querySelector('.btn-submit');
     btn.disabled = true;
     btn.textContent = 'Submitting\u2026';
@@ -547,7 +556,7 @@ fbq('track','PageView');
     }
 
     try {
-      await fetch('https://hook.eu2.make.com/th1gtw7cvdbxhsgj1h9s4uuoe22szmln', {
+      await fetch('https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
