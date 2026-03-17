@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Better Solar Installers Australia – Free Quote</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,700;1,800&display=swap" rel="stylesheet">
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -220,6 +220,43 @@ fbq('track','PageView');
 
   .error-msg { color: #e53e3e; font-size: 0.77rem; margin-top: 6px; display: none; }
   input.error, select.error { border-color: #e53e3e; }
+  /* Step counter dots */
+  .step-counter { display: flex; gap: 10px; align-items: center; padding: 12px 0 0; justify-content: center; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #dde8f0; transition: all 0.3s ease; }
+  .dot.active { background: var(--blue); transform: scale(1.2); }
+  .dot.done { background: var(--green); }
+  /* Yes/No cards */
+  .yesno-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+  .yn-card { border: 2.5px solid #e0eaf1; border-radius: 14px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.22s ease; background: var(--off-white); }
+  .yn-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,123,171,0.12); }
+  .yn-card.selected.yes-card { border-color: var(--green); background: linear-gradient(135deg, #e8f9f1, #f0faf5); box-shadow: 0 6px 24px rgba(0,166,81,0.18); }
+  .yn-card.selected.no-card { border-color: #e53e3e; background: #fff5f5; }
+  .yn-icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+  .yn-label { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+  .yn-sub { font-size: 0.75rem; color: var(--gray); }
+  /* Bill grid */
+  .bill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .bill-opt { border: 2.5px solid #e0eaf1; border-radius: 14px; padding: 18px 14px; text-align: center; cursor: pointer; transition: all 0.22s ease; background: var(--off-white); display: flex; flex-direction: column; gap: 5px; }
+  .bill-opt:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,123,171,0.12); }
+  .bill-opt.selected { border-color: var(--green); background: linear-gradient(135deg, #e8f9f1, #f0faf5); box-shadow: 0 6px 24px rgba(0,166,81,0.15); }
+  .bill-amount { font-weight: 800; font-size: 1.15rem; color: var(--blue); }
+  .bill-label { font-size: 0.73rem; color: var(--gray); }
+  /* Timeline cards */
+  .tl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .tl-card { border: 2.5px solid #e0eaf1; border-radius: 14px; padding: 18px 14px; text-align: center; cursor: pointer; transition: all 0.22s ease; background: var(--off-white); }
+  .tl-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,123,171,0.12); }
+  .tl-card.selected { border-color: var(--green); background: linear-gradient(135deg, #e8f9f1, #f0faf5); box-shadow: 0 6px 24px rgba(0,166,81,0.15); }
+  .tl-card-label { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 4px; }
+  .tl-card-sub { font-size: 0.73rem; color: var(--gray); }
+  /* Savings hint */
+  .savings-hint { background: linear-gradient(135deg, #e8f4f9, #e8f9f1); border-left: 4px solid var(--green); border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 0.8rem; color: var(--text); line-height: 1.55; }
+  .sh-icon { font-size: 1.2rem; flex-shrink: 0; }
+  /* Matched notice */
+  .matched-notice { background: linear-gradient(135deg, #e8f4f9, #e8f9f1); border-left: 4px solid var(--green); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; }
+  .mn-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .matched-notice p { font-size: 0.8rem; color: var(--text); line-height: 1.55; }
+  .matched-notice strong { color: var(--green-dark); }
+  .turnstile-row { margin-bottom: 16px; }
 </style>
 </head>
 <body>
@@ -251,126 +288,135 @@ fbq('track','PageView');
     <div class="survey-card">
       <div class="survey-header">
         <h2>Get Your Free Solar Quote</h2>
-        <p>Takes less than 60 seconds &mdash; no obligation whatsoever</p>
+        <p>4 quick questions &mdash; zero obligation</p>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div style="padding: 12px 28px 0; display: flex; justify-content: center;">
+        <div class="step-counter">
+          <div class="dot active" id="dot1"></div>
+          <div class="dot" id="dot2"></div>
+          <div class="dot" id="dot3"></div>
+          <div class="dot" id="dot4"></div>
+        </div>
+      </div>
       <div class="survey-body">
 
-        <!-- STEP 1 -->
+        <!-- STEP 1: Home Owner -->
         <div class="step active" id="step1">
-          <div class="step-label">Step 1 of 4</div>
-          <h3>What Are You Looking For?</h3>
-          <div class="option-grid">
-            <div class="opt-card" onclick="selectOpt(this,'need','solar')">
-              <span class="opt-icon">&#x2600;&#xFE0F;</span>
-              <div class="opt-title">Solar Panels</div>
-              <div class="opt-desc">Reduce electricity bills with a quality rooftop solar system</div>
-            </div>
-            <div class="opt-card" onclick="selectOpt(this,'need','battery')">
-              <span class="opt-icon">&#x1F50B;</span>
-              <div class="opt-title">Battery Storage</div>
-              <div class="opt-desc">Add a home battery to store your solar energy for night use</div>
-            </div>
-            <div class="opt-card" onclick="selectOpt(this,'need','both')">
-              <span class="opt-icon">&#x26A1;</span>
-              <div class="opt-title">Solar + Battery</div>
-              <div class="opt-desc">The ultimate combo &mdash; go off-peak and maximise your savings</div>
-            </div>
-            <div class="opt-card" onclick="selectOpt(this,'need','upgrade')">
-              <span class="opt-icon">&#x1F527;</span>
-              <div class="opt-title">Upgrade Existing</div>
-              <div class="opt-desc">Upgrade or expand your current solar or battery setup</div>
+          <div id="step1-inner">
+            <div class="step-label">Step 1 of 4</div>
+            <h3>Do You Own Your Home?</h3>
+            <div class="yesno-grid">
+              <div class="yn-card yes-card" onclick="pickOwner(true, this)">
+                <span class="yn-icon">&#x1F3E0;</span>
+                <div class="yn-label">Yes, I Own It</div>
+                <div class="yn-sub">Freehold or mortgage</div>
+              </div>
+              <div class="yn-card no-card" onclick="pickOwner(false, this)">
+                <span class="yn-icon">&#x1F511;</span>
+                <div class="yn-label">No, I Rent</div>
+                <div class="yn-sub">Tenant or other</div>
+              </div>
             </div>
           </div>
-          <button class="btn-next" onclick="nextStep(1)" id="btn1" disabled>Next &rarr;</button>
+          <div id="renter-msg" style="display:none; text-align:center; padding:12px 0 8px;">
+            <div style="font-size:2.8rem; margin-bottom:14px;">&#x1F614;</div>
+            <h3 style="font-size:1.1rem; color:var(--blue); margin-bottom:10px; text-transform:uppercase; font-style:italic; font-weight:800;">Sorry, We Can't Help Right Now</h3>
+            <p style="font-size:0.85rem; color:var(--gray); line-height:1.65; margin-bottom:18px;">Solar quotes are only available to homeowners. If your situation changes, we'd love to help you in the future!</p>
+            <div style="background:var(--off-white); border-radius:12px; padding:14px 16px; font-size:0.8rem; color:var(--text); line-height:1.6; border-left:4px solid var(--blue);">
+              &#x1F4A1; <strong>Buying soon?</strong> Bookmark this page &mdash; solar is one of the best first upgrades for new homeowners in Australia.
+            </div>
+          </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: Quarterly Bill -->
         <div class="step" id="step2">
           <div class="step-label">Step 2 of 4</div>
-          <h3>How Soon Are You Looking To Install?</h3>
-          <div class="timeline-grid">
-            <div class="tl-opt" onclick="selectTL(this,'timeline','asap')">
-              <span class="tl-icon">&#x1F680;</span>
-              <div><div class="tl-text">ASAP</div><div class="tl-sub">Within 1 month</div></div>
+          <h3>What's Your Average Quarterly Electricity Bill?</h3>
+          <div class="bill-grid">
+            <div class="bill-opt" onclick="pickBill(this, 'Under $300')">
+              <span class="bill-amount">Under $300</span>
+              <span class="bill-label">Low usage</span>
             </div>
-            <div class="tl-opt" onclick="selectTL(this,'timeline','1-3months')">
-              <span class="tl-icon">&#x1F4C5;</span>
-              <div><div class="tl-text">1&ndash;3 Months</div><div class="tl-sub">Planning ahead</div></div>
+            <div class="bill-opt" onclick="pickBill(this, '$300–$500')">
+              <span class="bill-amount">$300&ndash;$500</span>
+              <span class="bill-label">Average household</span>
             </div>
-            <div class="tl-opt" onclick="selectTL(this,'timeline','3-6months')">
-              <span class="tl-icon">&#x1F5D3;&#xFE0F;</span>
-              <div><div class="tl-text">3&ndash;6 Months</div><div class="tl-sub">Just researching</div></div>
+            <div class="bill-opt" onclick="pickBill(this, '$500–$800')">
+              <span class="bill-amount">$500&ndash;$800</span>
+              <span class="bill-label">High usage</span>
             </div>
-            <div class="tl-opt" onclick="selectTL(this,'timeline','exploring')">
-              <span class="tl-icon">&#x1F50D;</span>
-              <div><div class="tl-text">Just Exploring</div><div class="tl-sub">No rush yet</div></div>
+            <div class="bill-opt" onclick="pickBill(this, '$800+')">
+              <span class="bill-amount">$800+</span>
+              <span class="bill-label">Very high usage</span>
             </div>
           </div>
-          <div class="rebate-notice">
-            <span class="ri">&#x1F4A1;</span>
-            <p><strong>Rebates may be available*</strong> for eligible Australian homeowners through government incentive programs. Submit your quote request and we'll confirm what you may qualify for in your state.</p>
+          <div class="savings-hint">
+            <span class="sh-icon">&#x1F4A1;</span>
+            <p>The higher your bill, the faster solar pays off. At $500/qtr, most Australian homeowners see <strong>full payback in under 4 years.</strong></p>
           </div>
-          <button class="btn-next" onclick="nextStep(2)" id="btn2" disabled>Next &rarr;</button>
-          <span class="back-link" onclick="prevStep(2)">&larr; Back</span>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: Purchase Timeline -->
         <div class="step" id="step3">
           <div class="step-label">Step 3 of 4</div>
-          <h3>What Type Of Property?</h3>
-          <div class="option-grid three">
-            <div class="opt-card" onclick="selectOpt(this,'property','house')">
-              <span class="opt-icon">&#x1F3E0;</span>
-              <div class="opt-title">House</div>
-              <div class="opt-desc">Free-standing home</div>
+          <h3>When Are You Looking To Get Solar?</h3>
+          <div class="tl-grid">
+            <div class="tl-card" onclick="pickTimeline(this, 'ASAP')">
+              <div class="tl-card-label">ASAP</div>
+              <div class="tl-card-sub">Ready to go now</div>
             </div>
-            <div class="opt-card" onclick="selectOpt(this,'property','townhouse')">
-              <span class="opt-icon">&#x1F3D8;&#xFE0F;</span>
-              <div class="opt-title">Townhouse</div>
-              <div class="opt-desc">Attached dwelling</div>
+            <div class="tl-card" onclick="pickTimeline(this, '1-3 months')">
+              <div class="tl-card-label">1&ndash;3 Months</div>
+              <div class="tl-card-sub">Very soon</div>
             </div>
-            <div class="opt-card" onclick="selectOpt(this,'property','other')">
-              <span class="opt-icon">&#x1F3E2;</span>
-              <div class="opt-title">Other</div>
-              <div class="opt-desc">Farm, unit, business</div>
+            <div class="tl-card" onclick="pickTimeline(this, '3-6 months')">
+              <div class="tl-card-label">3&ndash;6 Months</div>
+              <div class="tl-card-sub">Planning ahead</div>
+            </div>
+            <div class="tl-card" onclick="pickTimeline(this, 'Just researching')">
+              <div class="tl-card-label">Just Researching</div>
+              <div class="tl-card-sub">No rush yet</div>
             </div>
           </div>
-          <button class="btn-next" onclick="nextStep(3)" id="btn3" disabled>Next &rarr;</button>
-          <span class="back-link" onclick="prevStep(3)">&larr; Back</span>
+          <div class="savings-hint">
+            <span class="sh-icon">&#x23F3;</span>
+            <p>No pressure &mdash; whether you're ready tomorrow or in 6 months, <strong>getting a quote now locks in today's rebate levels.</strong></p>
+          </div>
         </div>
 
-        <!-- STEP 4 -->
+        <!-- STEP 4: Contact -->
         <div class="step" id="step4">
           <div class="step-label">Step 4 of 4 &mdash; Almost There!</div>
           <h3>Where Should We Send Your Quote?</h3>
-          <div class="rebate-notice">
-            <span class="ri">&#x1F389;</span>
-            <p>Great news! We've found pre-vetted installers in your area. <strong>Enter your details</strong> and we'll match you with your #1 local solar pro for an obligation-free quote.</p>
+
+          <div class="matched-notice">
+            <span class="mn-icon">&#x1F3AF;</span>
+            <p>We've found <strong>pre-vetted installers in your area.</strong> Enter your details and we'll match you with your #1 local solar pro &mdash; no obligation, ever.</p>
           </div>
 
           <div class="field-row">
             <div class="field-group">
               <label>First Name</label>
-              <input type="text" id="firstName" placeholder="e.g. Sarah">
+              <input type="text" id="firstName" placeholder="e.g. Sarah" autocomplete="given-name">
               <div class="error-msg" id="err-firstName">Please enter your first name</div>
             </div>
             <div class="field-group">
               <label>Last Name</label>
-              <input type="text" id="lastName" placeholder="e.g. Johnson">
+              <input type="text" id="lastName" placeholder="e.g. Johnson" autocomplete="family-name">
               <div class="error-msg" id="err-lastName">Please enter your last name</div>
             </div>
           </div>
 
           <div class="field-group">
             <label>Mobile Number</label>
-            <input type="tel" id="phone" placeholder="04XX XXX XXX">
+            <input type="tel" id="phone" placeholder="04XX XXX XXX" inputmode="numeric" autocomplete="tel">
             <div class="error-msg" id="err-phone">Please enter a valid Australian mobile number</div>
           </div>
 
           <div class="field-group">
             <label>Email Address</label>
-            <input type="email" id="email" placeholder="you@example.com">
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
             <div class="error-msg" id="err-email">Please enter a valid email address</div>
           </div>
 
@@ -380,15 +426,15 @@ fbq('track','PageView');
             <div class="error-msg" id="err-postcode">Please enter a valid 4-digit Australian postcode</div>
           </div>
 
-          <div style="margin-bottom:16px;">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAACsCE8uno233U8Lk" data-theme="light"></div>
+          <div class="turnstile-row">
+            <div id="turnstile-container"></div>
           </div>
 
-          <button class="btn-next btn-submit" onclick="submitForm()">
+          <button class="btn-next btn-submit" id="submitBtn" disabled onclick="submitForm()">
             &#x1F3AF; Get My Free Matched Quote &rarr;
           </button>
           <div class="privacy-note">&#x1F512; 100% secure &amp; private &mdash; we never share your details with third parties</div>
-          <span class="back-link" onclick="prevStep(4)">&larr; Back</span>
+          <span class="back-link" onclick="goToStep(4,3)">&larr; Back</span>
         </div>
 
       </div>
@@ -472,91 +518,123 @@ fbq('track','PageView');
 </footer>
 
 <script>
-  var formData = {};
-  var totalSteps = 4;
+  var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
+  var TOTAL_STEPS = 4;
+  var formData = { source: 'national' };
+  var turnstileToken = '';
+
+  function onTurnstileSuccess(token) {
+    turnstileToken = token;
+    document.getElementById('submitBtn').disabled = false;
+  }
+  function onTurnstileExpire() {
+    turnstileToken = '';
+    document.getElementById('submitBtn').disabled = true;
+  }
 
   window.updateProgress = function(step) {
-    var pct = ((step - 1) / totalSteps) * 100;
+    var pct = ((step - 1) / TOTAL_STEPS) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.className = 'dot';
+      if (i < step) dot.classList.add('done');
+      else if (i === step) dot.classList.add('active');
+    }
   };
 
-  window.selectOpt = function(el, key, val) {
-    el.closest('.option-grid').querySelectorAll('.opt-card').forEach(function(c){ c.classList.remove('selected'); });
-    el.classList.add('selected');
-    formData[key] = val;
-    var stepNum = el.closest('.step').id.replace('step','');
-    document.getElementById('btn' + stepNum).disabled = false;
-  };
+  var turnstileRendered = false;
 
-  window.selectTL = function(el, key, val) {
-    el.closest('.timeline-grid').querySelectorAll('.tl-opt').forEach(function(c){ c.classList.remove('selected'); });
-    el.classList.add('selected');
-    formData[key] = val;
-    document.getElementById('btn2').disabled = false;
-  };
-
-  window.nextStep = function(current) {
-    document.getElementById('step' + current).classList.remove('active');
-    var next = current + 1;
-    document.getElementById('step' + next).classList.add('active');
-    updateProgress(next);
+  window.goToStep = function(from, to) {
+    document.getElementById('step' + from).classList.remove('active');
+    document.getElementById('step' + to).classList.add('active');
+    updateProgress(to);
     var card = document.querySelector('.survey-card');
-    if (card.getBoundingClientRect().top < 0) {
+    if (card.getBoundingClientRect().top < 60) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
-
-  window.prevStep = function(current) {
-    document.getElementById('step' + current).classList.remove('active');
-    var prev = current - 1;
-    document.getElementById('step' + prev).classList.add('active');
-    updateProgress(prev);
-  };
-
-  function validateField(id, validator) {
-    var el  = document.getElementById(id);
-    var err = document.getElementById('err-' + id);
-    if (!validator(el.value.trim())) {
-      el.classList.add('error');
-      if (err) err.style.display = 'block';
-      return false;
+    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+      turnstileRendered = true;
+      turnstile.render('#turnstile-container', {
+        sitekey: '0x4AAAAAACsCE8uno233U8Lk',
+        callback: function(token) { onTurnstileSuccess(token); },
+        'expired-callback': function() { onTurnstileExpire(); }
+      });
     }
-    el.classList.remove('error');
-    if (err) err.style.display = 'none';
-    return true;
+  };
+
+  window.pickOwner = function(owns, el) {
+    formData.is_homeowner = owns;
+    document.querySelectorAll('.yn-card').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    if (!owns) {
+      setTimeout(function() {
+        document.getElementById('step1-inner').style.display = 'none';
+        document.getElementById('renter-msg').style.display = 'block';
+      }, 280);
+      return;
+    }
+    setTimeout(function() { goToStep(1, 2); }, 280);
+  };
+
+  window.pickBill = function(el, val) {
+    document.querySelectorAll('.bill-opt').forEach(function(b) { b.classList.remove('selected'); });
+    el.classList.add('selected');
+    formData.avg_quarterly_bill = val;
+    setTimeout(function() { goToStep(2, 3); }, 280);
+  };
+
+  window.pickTimeline = function(el, val) {
+    document.querySelectorAll('.tl-card').forEach(function(t) { t.classList.remove('selected'); });
+    el.classList.add('selected');
+    formData.purchase_timeline = val;
+    setTimeout(function() { goToStep(3, 4); }, 280);
+  };
+
+  function validate(id, fn) {
+    var el = document.getElementById(id);
+    var err = document.getElementById('err-' + id);
+    var ok = fn(el.value.trim());
+    el.className = ok ? el.className.replace(' error','') : (el.className + ' error').trim();
+    if (err) err.style.display = ok ? 'none' : 'block';
+    return ok;
   }
 
   window.submitForm = async function() {
-    var valid = true;
-    valid = validateField('firstName', function(v){ return v.length > 1; }) && valid;
-    valid = validateField('lastName',  function(v){ return v.length > 1; }) && valid;
-    valid = validateField('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && valid;
-    valid = validateField('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && valid;
-    valid = validateField('postcode',  function(v){ return /^\d{4}$/.test(v); }) && valid;
+    var ok = true;
+    ok = validate('firstName', function(v){ return v.length > 1; }) && ok;
+    ok = validate('lastName',  function(v){ return v.length > 1; }) && ok;
+    ok = validate('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && ok;
+    ok = validate('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && ok;
+    ok = validate('postcode',  function(v){ return /^\d{4}$/.test(v); }) && ok;
+    if (!ok) return;
 
-    if (!valid) return;
+    if (!turnstileToken) {
+      alert('Please complete the security check before submitting.');
+      return;
+    }
 
-    formData.firstName   = document.getElementById('firstName').value.trim();
-    formData.lastName    = document.getElementById('lastName').value.trim();
-    formData.phone       = document.getElementById('phone').value.trim();
-    formData.email       = document.getElementById('email').value.trim();
-    formData.postcode    = document.getElementById('postcode').value.trim();
-    formData.submittedAt = new Date().toISOString();
+    var firstName = document.getElementById('firstName').value.trim();
+    var lastName  = document.getElementById('lastName').value.trim();
 
-    var turnstileEl = document.querySelector('[name="cf-turnstile-response"]');
-    var turnstileToken = turnstileEl ? turnstileEl.value : '';
+    formData.firstName    = firstName;
+    formData.lastName     = lastName;
+    formData.name         = firstName + ' ' + lastName;
+    formData.email        = document.getElementById('email').value.trim();
+    formData.phone        = document.getElementById('phone').value.trim().replace(/\s/g, '');
+    formData.postcode     = document.getElementById('postcode').value.trim();
+    formData.submitted_at = new Date().toISOString();
     formData['cf-turnstile-response'] = turnstileToken;
 
-    var btn = document.querySelector('.btn-submit');
-    btn.disabled = true;
-    btn.textContent = 'Submitting\u2026';
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Submitting\u2026';
 
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', { content_name: formData.need, content_category: 'Solar Quote', value: 0, currency: 'AUD' });
+      fbq('track', 'Lead', { content_name: 'Solar Quote', content_category: 'Solar', value: 0, currency: 'AUD' });
     }
 
     try {
-      await fetch('https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw', {
+      await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -570,10 +648,8 @@ fbq('track','PageView');
   };
 
   document.addEventListener('DOMContentLoaded', function() {
-    // Numbers only for phone
     var ph = document.getElementById('phone');
     if (ph) ph.addEventListener('input', function(){ this.value = this.value.replace(/[^\d\s]/g,''); });
-    // Numbers only, max 4 digits for postcode
     var pc = document.getElementById('postcode');
     if (pc) pc.addEventListener('input', function(){ this.value = this.value.replace(/\D/g,'').slice(0,4); });
   });
