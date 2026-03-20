@@ -32,7 +32,7 @@ Deno.serve(async (req: Request) => {
     const { data: buyers, error } = await supabase
       .from("clients")
       .select("id, company_name, postcodes")
-      .eq("type", "buyer")
+      .eq("type", "ppl")
       .eq("status", "active")
       .contains("postcodes", [postcode]);
 
