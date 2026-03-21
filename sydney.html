@@ -398,7 +398,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     <div class="trust-pill">✅ Pre-Vetted Local Installers</div>
     <div class="trust-pill">🔒 Licensed & Insured</div>
     <div class="trust-pill">💰 Obligation-Free Quote</div>
-    <div class="trust-pill">🇦🇺 Darling Downs Based</div>
+    <div class="trust-pill">🇦🇺 Sydney Based</div>
   </div>
 
   <div class="hero-copy">
@@ -416,7 +416,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     <div class="survey-card">
       <div class="card-header">
         <h2>Get Your Free Solar Quote</h2>
-        <p>4 quick questions — zero obligation</p>
+        <p>5 quick questions — zero obligation</p>
       </div>
       <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
 
@@ -426,6 +426,7 @@ footer strong { color: rgba(255,255,255,0.8); }
           <div class="dot" id="dot2"></div>
           <div class="dot" id="dot3"></div>
           <div class="dot" id="dot4"></div>
+          <div class="dot" id="dot5"></div>
         </div>
       </div>
 
@@ -434,7 +435,7 @@ footer strong { color: rgba(255,255,255,0.8); }
         <!-- STEP 1: Home Owner -->
         <div class="step active" id="step1">
           <div id="step1-inner">
-            <div class="step-label">Step 1 of 4</div>
+            <div class="step-label">Step 1 of 5</div>
             <h3>Do You Own Your Home?</h3>
             <div class="yesno-grid">
               <div class="yn-card yes-card" onclick="pickOwner(true, this)">
@@ -454,14 +455,14 @@ footer strong { color: rgba(255,255,255,0.8); }
             <h3 style="font-size:1.1rem; color:var(--blue-deeper); margin-bottom:10px; text-transform:uppercase; font-style:italic; font-weight:800;">Sorry, We Can't Help Right Now</h3>
             <p style="font-size:0.85rem; color:var(--gray); line-height:1.65; margin-bottom:18px;">Solar quotes are only available to homeowners. If your situation changes, we'd love to help you in the future!</p>
             <div style="background:var(--off-white); border-radius:12px; padding:14px 16px; font-size:0.8rem; color:var(--text); line-height:1.6; border-left:4px solid var(--blue);">
-              💡 <strong>Buying soon?</strong> Bookmark this page — solar is one of the best first upgrades for new homeowners in Queensland.
+              💡 <strong>Buying soon?</strong> Bookmark this page — solar is one of the best first upgrades for new homeowners in New South Wales.
             </div>
           </div>
         </div>
 
         <!-- ── STEP 2: Bill Size ── -->
         <div class="step" id="step2">
-          <div class="step-label">Step 2 of 4</div>
+          <div class="step-label">Step 2 of 5</div>
           <h3>What's Your Average Quarterly Electricity Bill?</h3>
           <div class="bill-grid">
             <div class="bill-opt" onclick="pickBill(this, 'Under $300')">
@@ -489,7 +490,7 @@ footer strong { color: rgba(255,255,255,0.8); }
 
         <!-- ── STEP 3: Contact ── -->
         <div class="step" id="step3">
-          <div class="step-label">Step 3 of 4</div>
+          <div class="step-label">Step 3 of 5</div>
           <h3>How Soon Are You Looking To Install?</h3>
           <div class="bill-grid">
             <div class="bill-opt" onclick="pickTimeline(this, 'ASAP')">
@@ -515,13 +516,39 @@ footer strong { color: rgba(255,255,255,0.8); }
           </div>
         </div>
 
+        <!-- ── STEP 4: Postcode ── -->
         <div class="step" id="step4">
-          <div class="step-label">Step 4 of 4 — Almost Done!</div>
-          <h3>Where Do We Send Your Free Quote?</h3>
+          <div class="step-label">Step 4 of 5</div>
+          <h3>What's Your Postcode?</h3>
 
           <div class="matched-notice">
+            <span class="mn-icon">📍</span>
+            <p>We use your postcode to <strong>match you with your nearest pre-vetted local installer.</strong></p>
+          </div>
+
+          <div class="field-group">
+            <label>Postcode</label>
+            <input type="text" id="postcode" placeholder="e.g. 2150" maxlength="4" inputmode="numeric">
+            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
+          </div>
+
+          <div id="postcode-error" style="display:none; background:#fff5f5; border-left:4px solid #e53e3e; border-radius:10px; padding:12px 14px; margin-bottom:16px;">
+            <p style="font-size:0.8rem; color:#e53e3e; line-height:1.5;">Sorry, we don't currently have an installer covering that postcode. Please try a different postcode or contact us directly.</p>
+          </div>
+
+          <button class="btn-submit" id="postcodeNextBtn" onclick="lookupPostcode()" style="background:linear-gradient(135deg, var(--blue), var(--blue-dark));">
+            Find My Local Installer →
+          </button>
+        </div>
+
+        <!-- ── STEP 5: Contact Info ── -->
+        <div class="step" id="step5">
+          <div class="step-label">Step 5 of 5 — Almost Done!</div>
+          <h3>Where Do We Send Your Free Quote?</h3>
+
+          <div class="matched-notice" id="buyerMatchNotice">
             <span class="mn-icon">🎯</span>
-            <p>We've found <strong>pre-vetted local installers near you.</strong> Enter your details and we'll get you matched — no obligation, ever.</p>
+            <p>Great news! We've matched you with <strong id="buyerNameDisplay">your local installer</strong> — a pre-vetted, licensed installer in your area. Enter your details below to receive your free quote.</p>
           </div>
 
           <div class="field-row">
@@ -549,12 +576,6 @@ footer strong { color: rgba(255,255,255,0.8); }
             <div class="err-msg" id="err-email">Enter a valid email address</div>
           </div>
 
-          <div class="field-group">
-            <label>Postcode</label>
-            <input type="text" id="postcode" placeholder="e.g. 4350" maxlength="4" inputmode="numeric">
-            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
-          </div>
-
           <div class="turnstile-row">
             <div id="turnstile-container"></div>
           </div>
@@ -562,7 +583,7 @@ footer strong { color: rgba(255,255,255,0.8); }
           <button class="btn-submit" id="submitBtn" disabled onclick="submitForm()">
             🎯 Get My Free Matched Quote →
           </button>
-          <div class="privacy-note">🔒 100% secure — we never share your details with third parties</div>
+          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to <strong id="consentBuyerName">our matched installer</strong> contacting you regarding your solar quote. 100% secure — we never share your details beyond your matched installer.</div>
         </div>
 
       </div><!-- /card-body -->
@@ -613,13 +634,13 @@ footer strong { color: rgba(255,255,255,0.8); }
   <div class="steps-row">
     <div class="how-step">
       <div class="step-num">1</div>
-      <h4>Answer 3 Quick Questions</h4>
+      <h4>Answer 5 Quick Questions</h4>
       <p>Takes under 60 seconds. No fluff, no lengthy forms.</p>
     </div>
     <div class="how-step">
       <div class="step-num">2</div>
       <h4>We Match You Instantly</h4>
-      <p>We find your top-rated, licensed local installer in the Darling Downs. No cowboys, ever.</p>
+      <p>We find your top-rated, licensed local installer in Greater Sydney. No cowboys, ever.</p>
     </div>
     <div class="how-step">
       <div class="step-num">3</div>
@@ -637,39 +658,39 @@ footer strong { color: rgba(255,255,255,0.8); }
 <!-- ═══ SOLAR FACTS ═══ -->
 <section class="solar-facts">
   <div class="section-title" style="margin-bottom:32px;">
-    <h2 style="color:#fff;">Why Solar Makes Sense In The Darling Downs</h2>
-    <p style="color:rgba(255,255,255,0.65);">Real numbers for Toowoomba & surrounding homeowners</p>
+    <h2 style="color:#fff;">Why Solar Makes Sense In Sydney</h2>
+    <p style="color:rgba(255,255,255,0.65);">Real numbers for Sydney & NSW homeowners</p>
   </div>
   <div class="facts-grid">
     <div class="fact-card">
       <span class="fact-icon">☀️</span>
-      <h4>250+ Sunny Days Per Year</h4>
-      <p>The Darling Downs is one of Australia's best solar regions. Toowoomba's elevation means excellent exposure for maximum generation year-round.</p>
+      <h4>Sydney's Solar Potential</h4>
+      <p>Greater Sydney averages over 2,400 sunshine hours per year — more than enough to power most homes entirely from solar.</p>
     </div>
     <div class="fact-card">
       <span class="fact-icon">💸</span>
-      <h4>Feed-In Tariffs With Ergon</h4>
-      <p>Sell excess power back to the grid and get credits on your bill every quarter through Ergon Energy or Origin.</p>
+      <h4>NSW Feed-In Tariffs</h4>
+      <p>Sell excess solar power back to the grid and receive credits on your electricity bill every quarter through your retailer.</p>
     </div>
     <div class="fact-card">
       <span class="fact-icon">🏷️</span>
       <h4>STC Rebates May Apply</h4>
-      <p>Federal Small-scale Technology Certificates and state incentives can significantly reduce your upfront cost. Ask your matched installer what you qualify for.</p>
+      <p>Federal Small-scale Technology Certificates can significantly reduce your upfront cost. Ask your matched installer what you qualify for.</p>
     </div>
     <div class="fact-card">
       <span class="fact-icon">📈</span>
-      <h4>3–6 Year Payback</h4>
-      <p>Most Queensland homeowners recoup their investment in 3–6 years, then enjoy effectively free power for 20+ years.</p>
+      <h4>3–5 Year Payback</h4>
+      <p>Most NSW homeowners recoup their solar investment in 3–5 years, then enjoy effectively free power for 20+ years.</p>
     </div>
     <div class="fact-card">
       <span class="fact-icon">🔋</span>
       <h4>Battery = True Independence</h4>
-      <p>Add a home battery and use your solar power at night — perfect for rural properties and anyone tired of peak tariffs.</p>
+      <p>Add a home battery and use your solar power at night — slash your grid dependency and beat peak tariff costs.</p>
     </div>
     <div class="fact-card">
       <span class="fact-icon">🏡</span>
       <h4>Add $20K–$40K To Your Property</h4>
-      <p>Studies show solar can significantly increase home resale value in Queensland regional markets.</p>
+      <p>Studies show solar can significantly increase home resale value in Sydney and NSW markets.</p>
     </div>
   </div>
 </section>
@@ -677,8 +698,8 @@ footer strong { color: rgba(255,255,255,0.8); }
 <!-- ═══ SERVICE AREAS ═══ -->
 <section class="service-areas">
   <div class="section-title">
-    <h2>Serving All Of The Darling Downs</h2>
-    <p>Toowoomba and every surrounding town within 80km — if you're in the region, we've got you covered.</p>
+    <h2>Serving All Of Greater Sydney</h2>
+    <p>From the CBD to the suburbs — wherever you are in Greater Sydney, we've got you covered.</p>
   </div>
   <div class="areas-grid">
     <div class="area-col">
@@ -731,18 +752,20 @@ footer strong { color: rgba(255,255,255,0.8); }
   <p style="margin-top:6px;">
     <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
     <a href="terms.html">Terms of Service</a> &nbsp;|&nbsp;
-    <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6d4c3f7d5d2c3c3d2c5c4d8dbd6c5ded9c4c3d6dbdbd2c5c499d4d8da99d6c2">Contact Us</a>
+    <a href="mailto:contact@bettersolarinstallers.com.au">Contact Us</a>
   </p>
   <p style="margin-top:10px; font-size:0.68rem; opacity:0.55;">
-    *Rebate availability subject to federal and state government eligibility criteria at time of installation. Better Solar Installers Australia is a referral matching service and does not provide installation services directly. All installers are independently licensed and insured. Serving Toowoomba, Warwick, Dalby, Gatton and all surrounding areas within 80km.
+    *Rebate availability subject to federal and state government eligibility criteria at time of installation. Better Solar Installers Australia is a referral matching service and does not provide installation services directly. All installers are independently licensed and insured. Serving all of Greater Sydney and surrounding NSW regions.
   </p>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
-  var TOTAL_STEPS = 4;
+  var SUPABASE_FUNCTION_URL = 'https://wmegoygrancfwxagqskh.supabase.co/functions/v1/postcode-lookup';
+  var TOTAL_STEPS = 5;
   var formData = { source: 'sydney' };
   var turnstileToken = '';
+  var matchedBuyerName = '';
 
   function onTurnstileSuccess(token) {
     turnstileToken = token;
@@ -775,7 +798,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     if (card.getBoundingClientRect().top < 60) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+    if (to === 5 && !turnstileRendered && typeof turnstile !== 'undefined') {
       turnstileRendered = true;
       turnstile.render('#turnstile-container', {
         sitekey: '0x4AAAAAACsCE8uno233U8Lk',
@@ -813,6 +836,52 @@ footer strong { color: rgba(255,255,255,0.8); }
     setTimeout(function() { goToStep(3, 4); }, 280);
   };
 
+  window.lookupPostcode = async function() {
+    var pcInput = document.getElementById('postcode');
+    var pc = pcInput.value.trim().replace(/\D/g, '');
+    if (!/^\d{4}$/.test(pc)) {
+      pcInput.classList.add('error');
+      document.getElementById('err-postcode').style.display = 'block';
+      return;
+    }
+    pcInput.classList.remove('error');
+    document.getElementById('err-postcode').style.display = 'none';
+    document.getElementById('postcode-error').style.display = 'none';
+
+    var btn = document.getElementById('postcodeNextBtn');
+    btn.disabled = true;
+    btn.textContent = 'Finding your installer…';
+
+    formData.postcode = pc;
+
+    try {
+      var resp = await fetch(SUPABASE_FUNCTION_URL + '?postcode=' + encodeURIComponent(pc));
+      var data = await resp.json();
+
+      if (data.buyer_name) {
+        matchedBuyerName = data.buyer_name;
+        formData.matched_buyer = data.buyer_name;
+        if (data.buyer_id) formData.matched_buyer_id = data.buyer_id;
+
+        document.getElementById('buyerNameDisplay').textContent = data.buyer_name;
+        document.getElementById('consentBuyerName').textContent = data.buyer_name;
+
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+        goToStep(4, 5);
+      } else {
+        document.getElementById('postcode-error').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+      }
+    } catch(e) {
+      console.error('Postcode lookup error:', e);
+      document.getElementById('postcode-error').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Find My Local Installer →';
+    }
+  };
+
   function validate(id, fn) {
     var el = document.getElementById(id);
     var err = document.getElementById('err-' + id);
@@ -828,7 +897,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     ok = validate('lastName',  function(v){ return v.length > 1; }) && ok;
     ok = validate('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && ok;
     ok = validate('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && ok;
-    ok = validate('postcode',  function(v){ return /^\d{4}$/.test(v); }) && ok;
     if (!ok) return;
 
     if (!turnstileToken) {
@@ -844,7 +912,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     formData.name         = firstName + ' ' + lastName;
     formData.email        = document.getElementById('email').value.trim();
     formData.phone        = document.getElementById('phone').value.trim().replace(/\s/g, '');
-    formData.postcode     = document.getElementById('postcode').value.trim();
     formData.submitted_at = new Date().toISOString();
     formData['cf-turnstile-response'] = turnstileToken;
 
