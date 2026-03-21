@@ -447,6 +447,7 @@ footer strong { color: rgba(255,255,255,0.8); }
           <div class="dot" id="dot2"></div>
           <div class="dot" id="dot3"></div>
           <div class="dot" id="dot4"></div>
+          <div class="dot" id="dot5"></div>
         </div>
       </div>
 
@@ -536,14 +537,39 @@ footer strong { color: rgba(255,255,255,0.8); }
           </div>
         </div>
 
-        <!-- ── STEP 4: Contact Info ── -->
+        <!-- ── STEP 4: Postcode ── -->
         <div class="step" id="step4">
-          <div class="step-label">Step 4 of 4 — Almost Done!</div>
-          <h3>Where Do We Send Your Free Quote?</h3>
+          <div class="step-label">Step 4 of 5</div>
+          <h3>What's Your Postcode?</h3>
 
           <div class="matched-notice">
+            <span class="mn-icon">📍</span>
+            <p>We use your postcode to <strong>match you with your nearest pre-vetted local installer.</strong></p>
+          </div>
+
+          <div class="field-group">
+            <label>Postcode</label>
+            <input type="text" id="postcode" placeholder="e.g. 4350" maxlength="4" inputmode="numeric">
+            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
+          </div>
+
+          <div id="postcode-error" style="display:none; background:#fff5f5; border-left:4px solid #e53e3e; border-radius:10px; padding:12px 14px; margin-bottom:16px;">
+            <p style="font-size:0.8rem; color:#e53e3e; line-height:1.5;">Sorry, we don't currently have an installer covering that postcode. Please try a different postcode or contact us directly.</p>
+          </div>
+
+          <button class="btn-submit" id="postcodeNextBtn" onclick="lookupPostcode()" style="background:linear-gradient(135deg, var(--blue), var(--blue-dark));">
+            Find My Local Installer →
+          </button>
+        </div>
+
+        <!-- ── STEP 5: Contact Info ── -->
+        <div class="step" id="step5">
+          <div class="step-label">Step 5 of 5 — Almost Done!</div>
+          <h3>Where Do We Send Your Free Quote?</h3>
+
+          <div class="matched-notice" id="buyerMatchNotice">
             <span class="mn-icon">🎯</span>
-            <p>Enter your details below and we'll match you with a <strong>pre-vetted, licensed local installer</strong> in the Darling Downs for your free quote.</p>
+            <p>Great news! We've matched you with <strong id="buyerNameDisplay">your local installer</strong> — a pre-vetted, licensed installer in your area. Enter your details below to receive your free quote.</p>
           </div>
 
           <div class="field-row">
@@ -571,20 +597,14 @@ footer strong { color: rgba(255,255,255,0.8); }
             <div class="err-msg" id="err-email">Enter a valid email address</div>
           </div>
 
-          <div class="field-group">
-            <label>Postcode</label>
-            <input type="text" id="postcode" placeholder="e.g. 4350" maxlength="4" inputmode="numeric">
-            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
-          </div>
-
           <div class="turnstile-row">
             <div id="turnstile-container"></div>
           </div>
 
           <button class="btn-submit" id="submitBtn" disabled onclick="submitForm()">
-            Get My Free Solar Quote →
+            🎯 Get My Free Matched Quote →
           </button>
-          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to Better Solar Installers matching you with a qualified local installer who will contact you regarding your solar quote. 100% secure — your details are only shared with your matched installer.</div>
+          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to <strong id="consentBuyerName">our matched installer</strong> contacting you regarding your solar quote. 100% secure — we never share your details beyond your matched installer.</div>
         </div>
 
       </div><!-- /card-body -->
@@ -763,9 +783,11 @@ footer strong { color: rgba(255,255,255,0.8); }
 
 <script>
   var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
-  var TOTAL_STEPS = 4;
+  var SUPABASE_FUNCTION_URL = 'https://wmegoygrancfwxagqskh.supabase.co/functions/v1/postcode-lookup';
+  var TOTAL_STEPS = 5;
   var formData = { source: 'darling-downs-lp' };
   var turnstileToken = '';
+  var matchedBuyerName = '';
 
   function onTurnstileSuccess(token) {
     turnstileToken = token;
@@ -798,7 +820,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     if (card.getBoundingClientRect().top < 60) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+    if (to === 5 && !turnstileRendered && typeof turnstile !== 'undefined') {
       turnstileRendered = true;
       turnstile.render('#turnstile-container', {
         sitekey: '0x4AAAAAACsCE8uno233U8Lk',
@@ -836,6 +858,52 @@ footer strong { color: rgba(255,255,255,0.8); }
     setTimeout(function() { goToStep(3, 4); }, 280);
   };
 
+  window.lookupPostcode = async function() {
+    var pcInput = document.getElementById('postcode');
+    var pc = pcInput.value.trim().replace(/\D/g, '');
+    if (!/^\d{4}$/.test(pc)) {
+      pcInput.classList.add('error');
+      document.getElementById('err-postcode').style.display = 'block';
+      return;
+    }
+    pcInput.classList.remove('error');
+    document.getElementById('err-postcode').style.display = 'none';
+    document.getElementById('postcode-error').style.display = 'none';
+
+    var btn = document.getElementById('postcodeNextBtn');
+    btn.disabled = true;
+    btn.textContent = 'Finding your installer…';
+
+    formData.postcode = pc;
+
+    try {
+      var resp = await fetch(SUPABASE_FUNCTION_URL + '?postcode=' + encodeURIComponent(pc));
+      var data = await resp.json();
+
+      if (data.buyer_name) {
+        matchedBuyerName = data.buyer_name;
+        formData.matched_buyer = data.buyer_name;
+        if (data.buyer_id) formData.matched_buyer_id = data.buyer_id;
+
+        document.getElementById('buyerNameDisplay').textContent = data.buyer_name;
+        document.getElementById('consentBuyerName').textContent = data.buyer_name;
+
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+        goToStep(4, 5);
+      } else {
+        document.getElementById('postcode-error').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+      }
+    } catch(e) {
+      console.error('Postcode lookup error:', e);
+      document.getElementById('postcode-error').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Find My Local Installer →';
+    }
+  };
+
   function validate(id, fn) {
     var el = document.getElementById(id);
     var err = document.getElementById('err-' + id);
@@ -851,7 +919,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     ok = validate('lastName',  function(v){ return v.length > 1; }) && ok;
     ok = validate('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && ok;
     ok = validate('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && ok;
-    ok = validate('postcode',  function(v){ return /^\d{4}$/.test(v); }) && ok;
     if (!ok) return;
 
     if (!turnstileToken) {
@@ -867,7 +934,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     formData.name         = firstName + ' ' + lastName;
     formData.email        = document.getElementById('email').value.trim();
     formData.phone        = document.getElementById('phone').value.trim().replace(/\s/g, '');
-    formData.postcode     = document.getElementById('postcode').value.trim();
     formData.submitted_at = new Date().toISOString();
     formData['cf-turnstile-response'] = turnstileToken;
 
