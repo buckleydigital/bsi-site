@@ -437,7 +437,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     <div class="survey-card">
       <div class="card-header">
         <h2>Get Your Free Solar Quote</h2>
-        <p>3 quick questions — zero obligation</p>
+        <p>5 quick questions — zero obligation</p>
       </div>
       <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
 
@@ -447,6 +447,7 @@ footer strong { color: rgba(255,255,255,0.8); }
           <div class="dot" id="dot2"></div>
           <div class="dot" id="dot3"></div>
           <div class="dot" id="dot4"></div>
+          <div class="dot" id="dot5"></div>
         </div>
       </div>
 
@@ -455,7 +456,7 @@ footer strong { color: rgba(255,255,255,0.8); }
         <!-- STEP 1: Home Owner -->
         <div class="step active" id="step1">
           <div id="step1-inner">
-            <div class="step-label">Step 1 of 4</div>
+            <div class="step-label">Step 1 of 5</div>
             <h3>Do You Own Your Home?</h3>
             <div class="yesno-grid">
               <div class="yn-card yes-card" onclick="pickOwner(true, this)">
@@ -482,7 +483,7 @@ footer strong { color: rgba(255,255,255,0.8); }
 
         <!-- ── STEP 2: Bill Size ── -->
         <div class="step" id="step2">
-          <div class="step-label">Step 2 of 4</div>
+          <div class="step-label">Step 2 of 5</div>
           <h3>What's Your Average Quarterly Electricity Bill?</h3>
           <div class="bill-grid">
             <div class="bill-opt" onclick="pickBill(this, 'Under $300')">
@@ -510,24 +511,24 @@ footer strong { color: rgba(255,255,255,0.8); }
 
         <!-- ── STEP 3: Purchase Timeline ── -->
         <div class="step" id="step3">
-          <div class="step-label">Step 3 of 4</div>
+          <div class="step-label">Step 3 of 5</div>
           <h3>When Are You Looking To Get Solar?</h3>
-          <div class="timeline-grid">
-            <div class="timeline-opt" onclick="pickTimeline(this, 'ASAP')">
-              <span class="timeline-label">ASAP</span>
-              <span class="timeline-sub">Ready to go now</span>
+          <div class="bill-grid">
+            <div class="bill-opt" onclick="pickTimeline(this, 'ASAP')">
+              <span class="bill-amount">🚀 ASAP</span>
+              <span class="bill-label">Within 1 month</span>
             </div>
-            <div class="timeline-opt" onclick="pickTimeline(this, '1-3 months')">
-              <span class="timeline-label">1–3 Months</span>
-              <span class="timeline-sub">Very soon</span>
+            <div class="bill-opt" onclick="pickTimeline(this, '1-3 Months')">
+              <span class="bill-amount">📅 1–3 Months</span>
+              <span class="bill-label">Planning ahead</span>
             </div>
-            <div class="timeline-opt" onclick="pickTimeline(this, '3-6 months')">
-              <span class="timeline-label">3–6 Months</span>
-              <span class="timeline-sub">Planning ahead</span>
+            <div class="bill-opt" onclick="pickTimeline(this, '3-6 Months')">
+              <span class="bill-amount">🗓️ 3–6 Months</span>
+              <span class="bill-label">Just researching</span>
             </div>
-            <div class="timeline-opt" onclick="pickTimeline(this, 'Just researching')">
-              <span class="timeline-label">Just Researching</span>
-              <span class="timeline-sub">No rush yet</span>
+            <div class="bill-opt" onclick="pickTimeline(this, 'Just Exploring')">
+              <span class="bill-amount">🔍 Exploring</span>
+              <span class="bill-label">No rush yet</span>
             </div>
           </div>
           <div class="savings-hint">
@@ -536,14 +537,39 @@ footer strong { color: rgba(255,255,255,0.8); }
           </div>
         </div>
 
-        <!-- ── STEP 4: Contact ── -->
+        <!-- ── STEP 4: Postcode ── -->
         <div class="step" id="step4">
-          <div class="step-label">Step 4 of 4 — Almost Done!</div>
-          <h3>Where Do We Send Your Free Quote?</h3>
+          <div class="step-label">Step 4 of 5</div>
+          <h3>What's Your Postcode?</h3>
 
           <div class="matched-notice">
+            <span class="mn-icon">📍</span>
+            <p>We use your postcode to <strong>match you with your nearest pre-vetted local installer.</strong></p>
+          </div>
+
+          <div class="field-group">
+            <label>Postcode</label>
+            <input type="text" id="postcode" placeholder="e.g. 4350" maxlength="4" inputmode="numeric">
+            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
+          </div>
+
+          <div id="postcode-error" style="display:none; background:#fff5f5; border-left:4px solid #e53e3e; border-radius:10px; padding:12px 14px; margin-bottom:16px;">
+            <p style="font-size:0.8rem; color:#e53e3e; line-height:1.5;">Sorry, we don't currently have an installer covering that postcode. Please try a different postcode or contact us directly.</p>
+          </div>
+
+          <button class="btn-submit" id="postcodeNextBtn" onclick="lookupPostcode()" style="background:linear-gradient(135deg, var(--blue), var(--blue-dark));">
+            Find My Local Installer →
+          </button>
+        </div>
+
+        <!-- ── STEP 5: Contact Info ── -->
+        <div class="step" id="step5">
+          <div class="step-label">Step 5 of 5 — Almost Done!</div>
+          <h3>Where Do We Send Your Free Quote?</h3>
+
+          <div class="matched-notice" id="buyerMatchNotice">
             <span class="mn-icon">🎯</span>
-            <p>We've found <strong>pre-vetted local installers near you.</strong> Enter your details and we'll get you matched — no obligation, ever.</p>
+            <p>Great news! We've matched you with <strong id="buyerNameDisplay">your local installer</strong> — a pre-vetted, licensed installer in your area. Enter your details below to receive your free quote.</p>
           </div>
 
           <div class="field-row">
@@ -571,12 +597,6 @@ footer strong { color: rgba(255,255,255,0.8); }
             <div class="err-msg" id="err-email">Enter a valid email address</div>
           </div>
 
-          <div class="field-group">
-            <label>Postcode</label>
-            <input type="text" id="postcode" placeholder="e.g. 4350" maxlength="4" inputmode="numeric">
-            <div class="err-msg" id="err-postcode">Enter a valid 4-digit postcode</div>
-          </div>
-
           <div class="turnstile-row">
             <div id="turnstile-container"></div>
           </div>
@@ -584,7 +604,7 @@ footer strong { color: rgba(255,255,255,0.8); }
           <button class="btn-submit" id="submitBtn" disabled onclick="submitForm()">
             🎯 Get My Free Matched Quote →
           </button>
-          <div class="privacy-note">🔒 100% secure — we never share your details with third parties</div>
+          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to <strong id="consentBuyerName">our matched installer</strong> contacting you regarding your solar quote. 100% secure — we never share your details beyond your matched installer.</div>
         </div>
 
       </div><!-- /card-body -->
@@ -635,7 +655,7 @@ footer strong { color: rgba(255,255,255,0.8); }
   <div class="steps-row">
     <div class="how-step">
       <div class="step-num">1</div>
-      <h4>Answer 3 Quick Questions</h4>
+      <h4>Answer 5 Quick Questions</h4>
       <p>Takes under 60 seconds. No fluff, no lengthy forms.</p>
     </div>
     <div class="how-step">
@@ -763,9 +783,11 @@ footer strong { color: rgba(255,255,255,0.8); }
 
 <script>
   var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
-  var TOTAL_STEPS = 4;
+  var SUPABASE_FUNCTION_URL = 'https://wmegoygrancfwxagqskh.supabase.co/functions/v1/postcode-lookup';
+  var TOTAL_STEPS = 5;
   var formData = { source: 'darling-downs-lp' };
   var turnstileToken = '';
+  var matchedBuyerName = '';
 
   function onTurnstileSuccess(token) {
     turnstileToken = token;
@@ -776,29 +798,29 @@ footer strong { color: rgba(255,255,255,0.8); }
     document.getElementById('submitBtn').disabled = true;
   }
 
-  function setProgress(step) {
+  window.updateProgress = function(step) {
     var pct = ((step - 1) / TOTAL_STEPS) * 100;
     document.getElementById('progFill').style.width = pct + '%';
     for (var i = 1; i <= TOTAL_STEPS; i++) {
       var dot = document.getElementById('dot' + i);
+      if (!dot) continue;
       dot.className = 'dot';
       if (i < step) dot.classList.add('done');
       else if (i === step) dot.classList.add('active');
     }
-  }
+  };
 
   var turnstileRendered = false;
 
-  function goToStep(from, to) {
+  window.goToStep = function(from, to) {
     document.getElementById('step' + from).classList.remove('active');
     document.getElementById('step' + to).classList.add('active');
-    setProgress(to);
+    updateProgress(to);
     var card = document.querySelector('.survey-card');
-    var rect = card.getBoundingClientRect();
-    if (rect.top < 60) {
+    if (card.getBoundingClientRect().top < 60) {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    if (to === 4 && !turnstileRendered && typeof turnstile !== 'undefined') {
+    if (to === 5 && !turnstileRendered && typeof turnstile !== 'undefined') {
       turnstileRendered = true;
       turnstile.render('#turnstile-container', {
         sitekey: '0x4AAAAAACsCE8uno233U8Lk',
@@ -806,7 +828,7 @@ footer strong { color: rgba(255,255,255,0.8); }
         'expired-callback': function() { onTurnstileExpire(); }
       });
     }
-  }
+  };
 
   window.pickOwner = function(owns, el) {
     formData.is_homeowner = owns;
@@ -823,24 +845,70 @@ footer strong { color: rgba(255,255,255,0.8); }
   };
 
   window.pickBill = function(el, val) {
-    document.querySelectorAll('.bill-opt').forEach(function(b) { b.classList.remove('selected'); });
+    document.querySelectorAll('#step2 .bill-opt').forEach(function(b) { b.classList.remove('selected'); });
     el.classList.add('selected');
     formData.avg_quarterly_bill = val;
     setTimeout(function() { goToStep(2, 3); }, 280);
   };
 
   window.pickTimeline = function(el, val) {
-    document.querySelectorAll('.timeline-opt').forEach(function(t) { t.classList.remove('selected'); });
+    document.querySelectorAll('#step3 .bill-opt').forEach(function(b) { b.classList.remove('selected'); });
     el.classList.add('selected');
     formData.purchase_timeline = val;
     setTimeout(function() { goToStep(3, 4); }, 280);
+  };
+
+  window.lookupPostcode = async function() {
+    var pcInput = document.getElementById('postcode');
+    var pc = pcInput.value.trim().replace(/\D/g, '');
+    if (!/^\d{4}$/.test(pc)) {
+      pcInput.classList.add('error');
+      document.getElementById('err-postcode').style.display = 'block';
+      return;
+    }
+    pcInput.classList.remove('error');
+    document.getElementById('err-postcode').style.display = 'none';
+    document.getElementById('postcode-error').style.display = 'none';
+
+    var btn = document.getElementById('postcodeNextBtn');
+    btn.disabled = true;
+    btn.textContent = 'Finding your installer…';
+
+    formData.postcode = pc;
+
+    try {
+      var resp = await fetch(SUPABASE_FUNCTION_URL + '?postcode=' + encodeURIComponent(pc));
+      var data = await resp.json();
+
+      if (data.buyer_name) {
+        matchedBuyerName = data.buyer_name;
+        formData.matched_buyer = data.buyer_name;
+        if (data.buyer_id) formData.matched_buyer_id = data.buyer_id;
+
+        document.getElementById('buyerNameDisplay').textContent = data.buyer_name;
+        document.getElementById('consentBuyerName').textContent = data.buyer_name;
+
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+        goToStep(4, 5);
+      } else {
+        document.getElementById('postcode-error').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Find My Local Installer →';
+      }
+    } catch(e) {
+      console.error('Postcode lookup error:', e);
+      document.getElementById('postcode-error').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Find My Local Installer →';
+    }
   };
 
   function validate(id, fn) {
     var el = document.getElementById(id);
     var err = document.getElementById('err-' + id);
     var ok = fn(el.value.trim());
-    el.className = ok ? el.className.replace(' error','') : (el.className + ' error').trim();
+    el.classList.toggle('error', !ok);
     if (err) err.style.display = ok ? 'none' : 'block';
     return ok;
   }
@@ -851,7 +919,6 @@ footer strong { color: rgba(255,255,255,0.8); }
     ok = validate('lastName',  function(v){ return v.length > 1; }) && ok;
     ok = validate('phone',     function(v){ return /^04\d{8}$/.test(v.replace(/\s/g,'')); }) && ok;
     ok = validate('email',     function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }) && ok;
-    ok = validate('postcode',  function(v){ return /^\d{4}$/.test(v); }) && ok;
     if (!ok) return;
 
     if (!turnstileToken) {
@@ -867,21 +934,15 @@ footer strong { color: rgba(255,255,255,0.8); }
     formData.name         = firstName + ' ' + lastName;
     formData.email        = document.getElementById('email').value.trim();
     formData.phone        = document.getElementById('phone').value.trim().replace(/\s/g, '');
-    formData.postcode     = document.getElementById('postcode').value.trim();
     formData.submitted_at = new Date().toISOString();
     formData['cf-turnstile-response'] = turnstileToken;
 
     document.getElementById('submitBtn').disabled = true;
-    document.getElementById('submitBtn').textContent = 'Submitting…';
+    document.getElementById('submitBtn').textContent = 'Matching you now\u2026';
     document.getElementById('overlay').classList.add('show');
 
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', {
-        content_name: 'Solar Quote - Darling Downs',
-        content_category: 'Solar',
-        value: 0,
-        currency: 'AUD'
-      });
+      fbq('track', 'Lead', { content_name: 'Solar Quote - Darling Downs', content_category: 'Solar', value: 0, currency: 'AUD' });
     }
 
     try {
@@ -894,6 +955,7 @@ footer strong { color: rgba(255,255,255,0.8); }
       console.warn('Webhook error:', e);
     }
 
+    sessionStorage.setItem('bsiLead', JSON.stringify(formData));
     window.location.href = 'thankyou.html';
   };
 
