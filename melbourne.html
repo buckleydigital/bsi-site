@@ -787,7 +787,6 @@ fbq('track','PageView');
     }
 
     sessionStorage.setItem('bsiLead', JSON.stringify(formData));
-    await new Promise(function(r){ setTimeout(r, 500); });
     window.location.href = 'thankyou.html';
   };
 
