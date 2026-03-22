@@ -934,6 +934,7 @@ footer strong { color: rgba(255,255,255,0.8); }
     }
 
     sessionStorage.setItem('bsiLead', JSON.stringify(formData));
+    await new Promise(function(r){ setTimeout(r, 500); });
     window.location.href = 'thankyou.html';
   };
 
