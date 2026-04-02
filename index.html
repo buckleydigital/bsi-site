@@ -431,7 +431,7 @@ fbq('track','PageView');
 
           <div class="matched-notice" id="buyerMatchNotice">
             <span class="mn-icon">🎯</span>
-            <p>Great news! We've matched you with <strong id="buyerNameDisplay">your local installer</strong> — a pre-vetted, licensed installer in your area. Enter your details below to receive your free quote.</p>
+            <p>Great news! We've matched you with <strong id="buyerNameDisplay">YAGI - Independant Energy Consultant</strong> — a pre-vetted, licensed installer in your area. Enter your details below to receive your free quote.</p>
           </div>
 
           <div class="field-row">
@@ -466,7 +466,7 @@ fbq('track','PageView');
           <button class="btn-next btn-submit" id="submitBtn" disabled onclick="submitForm()">
             🎯 Get My Free Matched Quote →
           </button>
-          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to <strong id="consentBuyerName">our matched installer</strong> contacting you regarding your solar quote. 100% secure — we never share your details beyond your matched installer.</div>
+          <div class="privacy-note" id="consentText">🔒 By submitting, you consent to <strong id="consentBuyerName">YAGI - Independant Energy Consultant</strong> contacting you regarding your solar quote. 100% secure — we never share your details beyond your matched installer.</div>
           <span class="back-link" onclick="goToStep(5,4)">← Back</span>
         </div>
 
@@ -551,12 +551,11 @@ fbq('track','PageView');
 </footer>
 
 <script>
-  var WEBHOOK_URL = 'https://hook.eu2.make.com/qw1gnas56z5s6vd4uc0wvi0pudw6pgkw';
-  var SUPABASE_FUNCTION_URL = 'https://wmegoygrancfwxagqskh.supabase.co/functions/v1/postcode-lookup';
+  var WEBHOOK_URL = 'https://hook.eu2.make.com/qmabprn66dbi4i3deetgo6rlh2u3ha3c';
   var TOTAL_STEPS = 5;
   var formData = { source: 'national' };
   var turnstileToken = '';
-  var matchedBuyerName = '';
+  var matchedBuyerName = 'YAGI - Independant Energy Consultant';
 
   function onTurnstileSuccess(token) {
     turnstileToken = token;
@@ -639,38 +638,13 @@ fbq('track','PageView');
     document.getElementById('err-postcode').style.display = 'none';
     document.getElementById('postcode-error').style.display = 'none';
 
-    var btn = document.getElementById('postcodeNextBtn');
-    btn.disabled = true;
-    btn.textContent = 'Finding your installer…';
-
     formData.postcode = pc;
+    formData.matched_buyer = matchedBuyerName;
 
-    try {
-      var resp = await fetch(SUPABASE_FUNCTION_URL + '?postcode=' + encodeURIComponent(pc));
-      var data = await resp.json();
+    document.getElementById('buyerNameDisplay').textContent = matchedBuyerName;
+    document.getElementById('consentBuyerName').textContent = matchedBuyerName;
 
-      if (data.buyer_name) {
-        matchedBuyerName = data.buyer_name;
-        formData.matched_buyer = data.buyer_name;
-        if (data.buyer_id) formData.matched_buyer_id = data.buyer_id;
-
-        document.getElementById('buyerNameDisplay').textContent = data.buyer_name;
-        document.getElementById('consentBuyerName').textContent = data.buyer_name;
-
-        btn.disabled = false;
-        btn.textContent = 'Find My Local Installer →';
-        goToStep(4, 5);
-      } else {
-        document.getElementById('postcode-error').style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Find My Local Installer →';
-      }
-    } catch(e) {
-      console.error('Postcode lookup error:', e);
-      document.getElementById('postcode-error').style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Find My Local Installer →';
-    }
+    goToStep(4, 5);
   };
 
   function validate(id, fn) {
