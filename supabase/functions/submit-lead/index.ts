@@ -1,5 +1,16 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
+/** Escape special HTML characters to prevent injection in email templates. */
+function esc(value: unknown): string {
+  if (value === null || value === undefined) return '—'
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -38,7 +49,18 @@ Deno.serve(async (req: Request) => {
       ...rest
     } = body
 
-    const leadName = (name ?? `${firstName ?? ''} ${lastName ?? ''}`.trim()) || null
+    const leadName = (() => {
+      const n = name ?? `${firstName ?? ''} ${lastName ?? ''}`.trim()
+      return n.length > 0 ? n : null
+    })()
+
+    // Basic server-side validation
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: 'Valid email is required' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
+      })
+    }
 
     // Everything else (source, is_homeowner, matched_buyer, etc.) goes into custom_fields
     const customFieldsObj: Record<string, unknown> = {}
@@ -114,17 +136,17 @@ Deno.serve(async (req: Request) => {
       <p>Better Solar Installers Australia</p>
     </div>
     <div class="bd">
-      <div class="row"><span class="lbl">Name</span><span class="val">${leadName ?? '—'}</span></div>
-      <div class="row"><span class="lbl">Email</span><span class="val"><a href="mailto:${email}">${email ?? '—'}</a></span></div>
-      <div class="row"><span class="lbl">Phone</span><span class="val"><a href="tel:${phone}">${phone ?? '—'}</a></span></div>
-      <div class="row"><span class="lbl">Postcode</span><span class="val">${postcode ?? '—'}</span></div>
-      <div class="row"><span class="lbl">Avg Quarterly Bill</span><span class="val">${avg_quarterly_bill ?? '—'}</span></div>
-      <div class="row"><span class="lbl">Purchase Timeline</span><span class="val">${purchase_timeline ?? '—'}</span></div>
-      <div class="row"><span class="lbl">Source</span><span class="val">${source ?? '—'}</span></div>
+      <div class="row"><span class="lbl">Name</span><span class="val">${esc(leadName)}</span></div>
+      <div class="row"><span class="lbl">Email</span><span class="val"><a href="mailto:${esc(email)}">${esc(email)}</a></span></div>
+      <div class="row"><span class="lbl">Phone</span><span class="val"><a href="tel:${esc(phone)}">${esc(phone)}</a></span></div>
+      <div class="row"><span class="lbl">Postcode</span><span class="val">${esc(postcode)}</span></div>
+      <div class="row"><span class="lbl">Avg Quarterly Bill</span><span class="val">${esc(avg_quarterly_bill)}</span></div>
+      <div class="row"><span class="lbl">Purchase Timeline</span><span class="val">${esc(purchase_timeline)}</span></div>
+      <div class="row"><span class="lbl">Source</span><span class="val">${esc(source)}</span></div>
       <div class="row"><span class="lbl">Homeowner</span><span class="val">${is_homeowner === true ? 'Yes' : is_homeowner === false ? 'No' : '—'}</span></div>
-      <div class="row"><span class="lbl">Matched Buyer</span><span class="val">${matched_buyer ?? '—'}</span></div>
-      <div class="row"><span class="lbl">Submitted At</span><span class="val">${submittedDisplay}</span></div>
-      ${customFields ? `<div class="row"><span class="lbl">Custom Fields</span><span class="val"><pre>${customFields}</pre></span></div>` : ''}
+      <div class="row"><span class="lbl">Matched Buyer</span><span class="val">${esc(matched_buyer)}</span></div>
+      <div class="row"><span class="lbl">Submitted At</span><span class="val">${esc(submittedDisplay)}</span></div>
+      ${customFields ? `<div class="row"><span class="lbl">Custom Fields</span><span class="val"><pre>${esc(customFields)}</pre></span></div>` : ''}
     </div>
     <div class="ft">Better Solar Installers Australia &bull; bettersolarinstallers.com.au</div>
   </div>
