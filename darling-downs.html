@@ -782,7 +782,8 @@ footer strong { color: rgba(255,255,255,0.8); }
 </footer>
 
 <script>
-  var WEBHOOK_URL = 'https://hook.eu2.make.com/qmabprn66dbi4i3deetgo6rlh2u3ha3c';
+  var SUPABASE_FUNCTION_URL = 'https://ijclawqvwxszbevambvu.supabase.co/functions/v1/submit-lead';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqY2xhd3F2d3hzemJldmFtYnZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MTYxODYsImV4cCI6MjA5MzA5MjE4Nn0.5oZBdN0psuR6drNB7c34rcQZhH2TNuMmJhHdpViiThg';
   var TOTAL_STEPS = 5;
   var formData = { source: 'darling-downs-lp' };
   var turnstileToken = '';
@@ -920,9 +921,13 @@ footer strong { color: rgba(255,255,255,0.8); }
     }
 
     try {
-      await fetch(WEBHOOK_URL, {
+      await fetch(SUPABASE_FUNCTION_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+          'apikey': SUPABASE_ANON_KEY,
+        },
         body: JSON.stringify(formData)
       });
     } catch(e) {
