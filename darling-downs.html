@@ -919,41 +919,12 @@ footer strong { color: rgba(255,255,255,0.8); }
       fbq('track', 'Lead', { content_name: 'Solar Quote - Darling Downs', content_category: 'Solar', value: 0, currency: 'AUD' });
     }
 
-    var SUPABASE_URL = 'https://ijclawqvwxszbevambvu.supabase.co';
-    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqY2xhd3F2d3hzemJldmFtYnZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MTYxODYsImV4cCI6MjA5MzA5MjE4Nn0.5oZBdN0psuR6drNB7c34rcQZhH2TNuMmJhHdpViiThg';
-    var leadPayload = {
-      source:              formData.source,
-      first_name:          formData.firstName,
-      last_name:           formData.lastName,
-      name:                formData.name,
-      email:               formData.email,
-      phone:               formData.phone,
-      is_homeowner:        formData.is_homeowner,
-      avg_quarterly_bill:  formData.avg_quarterly_bill,
-      purchase_timeline:   formData.purchase_timeline,
-      postcode:            formData.postcode,
-      matched_buyer:       formData.matched_buyer,
-      submitted_at:        formData.submitted_at
-    };
-
     try {
-      await Promise.all([
-        fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        }),
-        fetch(SUPABASE_URL + '/rest/v1/leads', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify(leadPayload)
-        })
-      ]);
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
     } catch(e) {
       console.warn('Submission error:', e);
     }
