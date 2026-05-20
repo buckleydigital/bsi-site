@@ -919,14 +919,20 @@ footer strong { color: rgba(255,255,255,0.8); }
       fbq('track', 'Lead', { content_name: 'Solar Quote - Darling Downs', content_category: 'Solar', value: 0, currency: 'AUD' });
     }
 
+    var controller = new AbortController();
+    var timer = setTimeout(function() { controller.abort(); }, 8000);
     try {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        keepalive: true,
+        signal: controller.signal
       });
     } catch(e) {
       console.warn('Submission error:', e);
+    } finally {
+      clearTimeout(timer);
     }
 
     sessionStorage.setItem('bsiLead', JSON.stringify(formData));
